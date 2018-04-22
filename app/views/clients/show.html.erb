@@ -1,0 +1,42 @@
+<h2>Профиль <%= @client.name %></h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Услуга</th>
+      <th>Дата начала</th>
+      <th>Дата окончания</th>
+      <th>Оплаченная сумма</th>
+      <th>Состояние</th>
+      <th>Оплата</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @paid_services.each do |item| %>
+    <tr>
+      <td><%= item.service.title %></td>
+      <td><%= item.start_date %></td>
+      <td><%= item.end_date %></td>
+      <td><%= item.amount %></td>
+      <td>
+        <% if item.status %>
+        <i class="text-success">Активно</i>
+        <% else %>
+        <i class="text-danger">Неактивно</i>
+        <% end %>
+      </td>
+      <td>
+        <% if item.amount == item.required_amount %>
+        <i class="text-success">Оплачено</i>
+        <% elsif item.amount == 0 %>
+        <i class="text-danger">Неоплачено</i>
+        <%= link_to "Оформить доплату", edit_client_paid_service_path(@client.id,item.id),class: "btn btn-primary" %>
+        <% else %>
+        <i class="text-warning">Неполная оплата(Недостаточно <%= item.required_amount - item.amount %>грн)</i>
+        <%= link_to "Оформить доплату", edit_client_paid_service_path(@client.id,item.id),class: "btn btn-primary" %>
+        <% end %>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= link_to "Оформить услугу", new_client_paid_service_path(@client.id), class: "btn btn-success" %>

@@ -1,0 +1,5 @@
+<%= form_for @paid_service,url: client_paid_service_path(@client.id,@paid_service.id),method: :put do |f| %>
+<%= f.text_field :amount, value: 0 %>
+<i class="text-warning">Недостаточно <%= @paid_service.required_amount - @paid_service.amount %>грн</i>
+<%= f.submit "Оформить", class: "btn btn-success" %>
+<% end %>

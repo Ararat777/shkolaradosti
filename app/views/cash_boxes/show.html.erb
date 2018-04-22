@@ -1,0 +1,78 @@
+<h2 class="text-center">Касса</h2>
+<div class="row">
+  <div class="col-md-3">
+    <h4 class="text-center"><%= current_branch.title %></h4>
+    <div class="text-center">
+      <p>Всего в кассе: <%= current_cash_box.cash %> грн</p>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <h4 class="text-center text-success">Приходы</h4>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Кто оплатил</th>
+          <th>Услуга</th>
+          <th>Сумма оплаты</th>
+          <th>Дата и время</th>
+          <th>Комментарий</th>
+          <th>Действия</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @incomes.each do |income| %>
+        <tr>
+          <td><%= Client.find(income.client).name %></td>
+          <td><%= Service.find(income.service).title %></td>
+          <td><%= income.amount %>грн</td>
+          <td><%= income.created_at %></td>
+          <td><%= income.comment %></td>
+          <td><%= link_to "Просмотреть", income_path(income.id) %></td>
+        </tr>
+        <% end %>
+        <tr>
+          <td colspan="2">Сумма приходов:</td>
+          <td colspan="4"><%= @incomes.sum(:amount) %>грн</td>
+        </tr>
+      </tbody>
+    </table><br>
+    <h4 class="text-center">Переводы</h4>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Откуда</th>
+          <th>Куда</th>
+          <th>Сколько</th>
+          <th>Статус</th>
+          <th>Тип</th>
+          <th>Комментарий</th>
+          <th>Действия</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @transfers.each do |transfer| %>
+        <tr>
+          <td><%= CashBox.find(transfer.from_cashbox).branch.title %></td>
+          <td><%= CashBox.find(transfer.to_cashbox).branch.title %></td>
+          <td><%= transfer.amount %>грн</td>
+          <td><%= transfer.status %></td>
+          <td>
+            <% if transfer.from_cashbox == current_cash_box.id %>
+            Отправка
+            <% else %>
+            Получение
+            <% end %>
+          </td>
+          <td><%= transfer.comment %></td>
+          <td>
+            <%= link_to "Просмотреть", income_path(transfer.id) %>
+            <% if transfer.status == "pending" && current_cash_box.id == transfer.to_cashbox %>
+            |<%= link_to "ПОДТВЕРДИТЬ", confirme_transfer_path(transfer.id), method: :put %>
+            <% end %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

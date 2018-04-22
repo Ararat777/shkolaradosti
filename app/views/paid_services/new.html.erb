@@ -1,0 +1,33 @@
+<div class="row">
+  <div class="col-md-4">
+  </div>
+  <div class="col-md-4">
+    <%= form_for @paid_service,url: client_paid_services_path(@client.id) do |f| %>
+    <div class="form-group">
+      <%= f.label "Тип услуги" %>
+      <%= f.select :service_id, current_branch.services.collect{|s| [s.title, s.id]},{},{class: "custom-select"} %>
+    </div>
+    <div class="form-group">
+      <%= f.label "Начало" %>
+      <%= f.date_field :start_date,class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label "Конец" %>
+      <%= f.date_field :end_date,class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label "Требуемая сумма" %>
+      <%= f.text_field :required_amount,class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label "Сумма" %>
+      <%= f.text_field :amount,class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label "Комментарий" %>
+      <%= f.text_area :comment,class: "form-control" %>
+    </div>
+    <%= f.submit "Оформить", class: "btn btn-success form-control" %>
+    <% end %>
+  </div>
+</div>

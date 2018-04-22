@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="col-md-4">
+  </div>
+  <div class="col-md-4">
+    <%= form_for @transfer,url: transfers_path do |f| %>
+    <%= f.hidden_field :from_cashbox,value: current_cash_box.id %>
+    <div class="form-group">
+      <%= f.label "Филиал" %>
+      <%= f.select :to_cashbox, CashBox.all.reject{|b| b.id == current_cash_box.id }.collect{|s| [s.branch.title, s.id]},{},{class: 'custom-select'} %>
+    </div>
+    <div class="form-group">
+      <%= f.label "Cумма" %>
+      <%= f.text_field :amount,class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label "Комментарий" %>
+      <%= f.text_area :comment,class: "form-control" %>
+    </div>
+    <%= f.submit "Оформить перевод", class: "btn btn-success form-control" %>
+    <% end %>
+  </div>
+</div>
