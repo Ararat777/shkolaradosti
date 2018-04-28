@@ -38,7 +38,27 @@
       <% end %>
   </nav>
     <div class="container-fluid">
-      <%= yield %>
+      <div class="row">
+        <div class="col-md-3">
+          <% if user_signed_in? %>
+            <h4 class="text-center"><%= current_branch.title %></h4>
+            <div class="text-center">
+              <p>Всего в кассе: <%= current_cash_box.cash %> грн</p>
+            </div>
+            <div class="text-center">
+              <div class="list-group">
+                <%= link_to "Добавить нового клиента",new_client_path,class: "list-group-item list-group-item-action #{current_class?(new_client_path)}" %>
+                <%= link_to "Оформить расход",new_consumption_path,class: "list-group-item list-group-item-action #{current_class?(new_consumption_path)}" %>
+                <%= link_to "Оформить перевод",new_transfer_path,class: "list-group-item list-group-item-action #{current_class?(new_transfer_path)}" %>
+                <%= link_to "Инкасация",new_encashment_path,class: "list-group-item list-group-item-action #{current_class?(new_encashment_path)}" %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <div class="col-md-9">
+          <%= yield %>
+        </div>
+      </div>
     </div>
   </body>
 </html>

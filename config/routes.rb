@@ -4,8 +4,6 @@ Rails.application.routes.draw do
   resources :clients do
     resources :paid_services
   end
-  resources :transfers
-  
   get "/cashbox", to: "cash_boxes#show"
   scope '/cashbox' do
     resources :incomes, only: [:show]

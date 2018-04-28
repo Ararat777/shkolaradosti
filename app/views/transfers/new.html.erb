@@ -1,7 +1,5 @@
 <div class="row">
-  <div class="col-md-4">
-  </div>
-  <div class="col-md-4">
+  <div class="col-md-5 offset-md-2">
     <%= form_for @transfer,url: transfers_path do |f| %>
     <%= f.hidden_field :from_cashbox,value: current_cash_box.id %>
     <div class="form-group">

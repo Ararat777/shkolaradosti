@@ -6,6 +6,7 @@
       <th>Дата начала</th>
       <th>Дата окончания</th>
       <th>Оплаченная сумма</th>
+      <th>Требуемая сумма</th>
       <th>Состояние</th>
       <th>Оплата</th>
     </tr>
@@ -17,6 +18,7 @@
       <td><%= item.start_date %></td>
       <td><%= item.end_date %></td>
       <td><%= item.amount %></td>
+      <td><%= item.required_amount %></td>
       <td>
         <% if item.status %>
         <i class="text-success">Активно</i>

@@ -1,12 +1,4 @@
 <h2 class="text-center">Касса</h2>
-<div class="row">
-  <div class="col-md-3">
-    <h4 class="text-center"><%= current_branch.title %></h4>
-    <div class="text-center">
-      <p>Всего в кассе: <%= current_cash_box.cash %> грн</p>
-    </div>
-  </div>
-  <div class="col-md-8">
     <h4 class="text-center text-success">Приходы</h4>
     <table class="table">
       <thead>
@@ -72,7 +64,57 @@
           </td>
         </tr>
         <% end %>
+        <tr>
+          <td colspan="2">Сумма полученных переводов:</td>
+          <td colspan="5"><%= @transfers.where(:to_cashbox => current_cash_box.id).sum(:amount) %>грн</td>
+        </tr>
+        <tr>
+          <td colspan="2">Сумма отправленных переводов:</td>
+          <td colspan="5"><%= @transfers.where(:from_cashbox => current_cash_box.id).sum(:amount) %>грн</td>
+        </tr>
+      </tbody>
+    </table><br>
+<h4 class="text-center">Расходы</h4>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>За что</th>
+          <th>Сумма</th>
+          <th>Комментарий</th>
+          <th>Время</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @consumptions.each do |item| %>
+        <tr>
+          <td><%= item.title %></td>
+          <td><%= item.amount %>грн</td>
+          <td><%= item.comment %></td>
+          <td><%= item.created_at %></td>
+        </tr>
+        <% end %>
+        <tr>
+          <td colspan="1">Сумма расходов:</td>
+          <td colspan="3"><%= @consumptions.sum(:amount) %>грн</td>
+        </tr>
       </tbody>
     </table>
-  </div>
-</div>
+<h4 class="text-center">Инкасации</h4>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Сумма</th>
+          <th>Комментарий</th>
+          <th>Время</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @encashments.each do |item| %>
+        <tr>
+          <td><%= item.amount %>грн</td>
+          <td><%= item.comment %></td>
+          <td><%= item.created_at %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>

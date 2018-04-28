@@ -1,0 +1,2 @@
+module EncashmentsHelper
+end
