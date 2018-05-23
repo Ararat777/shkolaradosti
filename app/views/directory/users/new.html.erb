@@ -1,0 +1,23 @@
+<div class="row">
+  <div class="col-md-6 offset-md-2">
+    <%= form_for @user,url: directory_users_path do |f| %>
+    <div class="form-group">
+      <%= f.label "ФИО" %>
+      <%= f.text_field :name, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label "Логин" %>
+      <%= f.text_field :email, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label "Пароль" %>
+      <%= f.password_field :password, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label "Номер телефона" %>
+      <%= f.text_field :phone, class: "form-control" %>
+    </div>
+    <%= f.submit "Добавить", class: "btn btn-success form-control" %>
+    <% end %>
+  </div>
+</div>

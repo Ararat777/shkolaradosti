@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180419113834) do
+ActiveRecord::Schema.define(version: 20180522220928) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,9 +37,11 @@ ActiveRecord::Schema.define(version: 20180419113834) do
     t.text "allergy"
     t.text "comment"
     t.bigint "branch_id"
+    t.bigint "discount_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["branch_id"], name: "index_clients_on_branch_id"
+    t.index ["discount_id"], name: "index_clients_on_discount_id"
   end
 
   create_table "consumptions", force: :cascade do |t|
@@ -52,6 +54,15 @@ ActiveRecord::Schema.define(version: 20180419113834) do
     t.index ["cash_box_id"], name: "index_consumptions_on_cash_box_id"
   end
 
+  create_table "discounts", force: :cascade do |t|
+    t.string "title"
+    t.integer "percent"
+    t.boolean "active"
+    t.text "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "encashments", force: :cascade do |t|
     t.decimal "amount"
     t.text "comment"
@@ -59,6 +70,18 @@ ActiveRecord::Schema.define(version: 20180419113834) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["cash_box_id"], name: "index_encashments_on_cash_box_id"
+  end
+
+  create_table "foods", force: :cascade do |t|
+    t.float "price"
+    t.float "amount", default: 0.0
+    t.integer "count_days", default: 0
+    t.string "paid_days", default: "0"
+    t.bigint "client_id"
+    t.text "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["client_id"], name: "index_foods_on_client_id"
   end
 
   create_table "incomes", force: :cascade do |t|
@@ -87,13 +110,31 @@ ActiveRecord::Schema.define(version: 20180419113834) do
     t.index ["service_id"], name: "index_paid_services_on_service_id"
   end
 
+  create_table "roles", force: :cascade do |t|
+    t.string "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "services", force: :cascade do |t|
     t.string "title"
-    t.decimal "price"
+    t.float "price"
+    t.boolean "active", default: true
     t.bigint "branch_id"
+    t.text "comment"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["branch_id"], name: "index_services_on_branch_id"
+  end
+
+  create_table "single_discounts", force: :cascade do |t|
+    t.string "title"
+    t.integer "percent"
+    t.integer "count"
+    t.boolean "active"
+    t.text "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "transfers", force: :cascade do |t|
@@ -111,6 +152,8 @@ ActiveRecord::Schema.define(version: 20180419113834) do
     t.string "name"
     t.string "phone"
     t.string "adress"
+    t.boolean "admin", default: false
+    t.bigint "role_id"
     t.bigint "branch_id"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -127,6 +170,15 @@ ActiveRecord::Schema.define(version: 20180419113834) do
     t.index ["branch_id"], name: "index_users_on_branch_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["role_id"], name: "index_users_on_role_id"
+  end
+
+  create_table "visited_days", force: :cascade do |t|
+    t.date "day"
+    t.bigint "client_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["client_id"], name: "index_visited_days_on_client_id"
   end
 
 end

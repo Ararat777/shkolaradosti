@@ -2,8 +2,10 @@ class CreateServices < ActiveRecord::Migration[5.1]
   def change
     create_table :services do |t|
       t.string :title
-      t.decimal :price
+      t.float :price
+      t.boolean :active, default: true
       t.belongs_to :branch,index: true
+      t.text :comment
       t.timestamps
     end
   end

@@ -1,0 +1,22 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Имя</th>
+      <th scope="col">Возраст</th>
+      <th scope="col">Действия</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% clients.each do |client| %>
+    <tr>
+      <td><%= client.name %></td>
+      <td><%= client.age %></td>
+      <% if client.discount_id %>
+      <td>У клиента уже есть скидка(<%= client.discount.title %>)</td>
+      <% else %>
+      <td><%= link_to "Добавить скидку",add_discount_client_directory_discount_path(discount.id,client.id),remote: true %></td>
+      <% end %>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -3,15 +3,15 @@
     <%= form_for @paid_service,url: client_paid_services_path(@client.id) do |f| %>
     <div class="form-group">
       <%= f.label "Тип услуги" %>
-      <%= f.select :service_id, current_branch.services.collect{|s| [s.title, s.id]},{},{class: "custom-select"} %>
+      <%= f.select :service_id, current_branch.services.reject{|s| s.title == "Питание"}.collect{|s| [s.title, s.id]},{},{class: "custom-select",id: "select_service" } %>
     </div>
     <div class="form-group">
       <%= f.label "Начало" %>
-      <%= f.date_field :start_date,class: "form-control" %>
+      <%= f.date_field :start_date,class: "form-control date" %>
     </div>
     <div class="form-group">
       <%= f.label "Конец" %>
-      <%= f.date_field :end_date,class: "form-control" %>
+      <%= f.date_field :end_date,class: "form-control date" %>
     </div>
     <div class="form-group">
       <%= f.label "Требуемая сумма" %>

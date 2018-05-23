@@ -1,0 +1,2 @@
+module Directory::DiscountsHelper
+end

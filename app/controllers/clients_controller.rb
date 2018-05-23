@@ -1,12 +1,24 @@
 class ClientsController < ApplicationController
-  before_action :set_client, only: [:show,:update]
+  before_action :set_client, only: [:show,:update,:handle_visit]
   
   def index
-    @clients = current_branch.clients
+    
+    if params[:q]
+      @clients = current_branch.clients.where("name LIKE ?", "%#{params[:q][:name]}%")
+    else
+      @clients = current_branch.clients
+    end
+    
+    respond_to do |format|
+      format.html {}
+      format.js {}
+    end
+    
   end
   
   def show
     @paid_services = @client.paid_services
+    @foods = @client.foods
   end
   
   def new
@@ -19,6 +31,15 @@ class ClientsController < ApplicationController
       redirect_to client_path(@client.id)
     else
       render :new
+    end
+  end
+  
+  def handle_visit
+    @client.visited_days.create(:day => Date.today)
+    @client.foods.last.count_days -= 1
+    @client.foods.last.save
+    respond_to do |format|
+      format.js {}
     end
   end
   

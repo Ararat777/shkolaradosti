@@ -15,8 +15,8 @@ branch.create_cash_box(:cash => 0)
 branch_2.create_cash_box(:cash => 0)
 
 User.delete_all
-branch.create_user(:email => "admin@admin.com", :password => "123456")
-branch_2.create_user(:email => "vasya@admin.com", :password => "123456")
+branch.users.create(:email => "admin@admin.com", :password => "123456")
+branch_2.users.create(:email => "vasya@admin.com", :password => "123456")
 
 Client.delete_all
 branch.clients.create(:name => "Иван Иванов", :age => 4)
@@ -27,3 +27,8 @@ Service.delete_all
 branch.services.create(:title => "Детский сад", :price => 1000)
 branch.services.create(:title => "Питание", :price => 500)
 branch.services.create(:title => "Физра", :price => 100)
+
+Role.delete_all
+Role.create(:title => "Администратор")
+Role.create(:title => "Бухгалтер")
+Role.create(:title => "Завхоз")

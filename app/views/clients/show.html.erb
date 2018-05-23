@@ -1,4 +1,16 @@
-<h2>Профиль <%= @client.name %></h2>
+<h2><%= @client.name %></h2>
+<div class="row">
+  <div class="col-md-3">
+    <%= link_to "Оформить услугу", new_client_paid_service_path(@client.id), class: "btn btn-success" %>
+  </div>
+  <div class="col-md-3">
+   <%= link_to "Оформить питание", new_client_food_path(@client.id), class: "btn btn-success" %>
+  </div>
+</div>
+<div id="calendar">
+  <%= render "calendar",client: @client %>
+</div>
+<h3>Оформленные услуги</h3>
 <table class="table">
   <thead>
     <tr>
@@ -9,6 +21,7 @@
       <th>Требуемая сумма</th>
       <th>Состояние</th>
       <th>Оплата</th>
+      <th>Действия</th>
     </tr>
   </thead>
   <tbody>
@@ -20,7 +33,7 @@
       <td><%= item.amount %></td>
       <td><%= item.required_amount %></td>
       <td>
-        <% if item.status %>
+        <% if item.check_status %>
         <i class="text-success">Активно</i>
         <% else %>
         <i class="text-danger">Неактивно</i>
@@ -34,11 +47,36 @@
         <%= link_to "Оформить доплату", edit_client_paid_service_path(@client.id,item.id),class: "btn btn-primary" %>
         <% else %>
         <i class="text-warning">Неполная оплата(Недостаточно <%= item.required_amount - item.amount %>грн)</i>
-        <%= link_to "Оформить доплату", edit_client_paid_service_path(@client.id,item.id),class: "btn btn-primary" %>
+        <% end %>
+      </td>
+      <td>
+        <% if item.check_status || item.amount != item.required_amount %>
+        <%= link_to "Изменить", edit_client_paid_service_path(@client.id,item.id),class: "btn btn-primary" %>
         <% end %>
       </td>
     </tr>
     <% end %>
   </tbody>
 </table>
-<%= link_to "Оформить услугу", new_client_paid_service_path(@client.id), class: "btn btn-success" %>
+<h3>Питание</h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Оплаченные дни</th>
+      <th>Осталось дней</th>
+      <th>Сумма оплаты</th>
+      <th>Комментарий</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @foods.each do |item| %>
+    <tr>
+      <td><%= item.paid_days %></td>
+      <td><%= item.count_days %></td>
+      <td><%= item.amount %></td>
+      <td><%= item.comment %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+

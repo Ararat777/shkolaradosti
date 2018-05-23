@@ -6,6 +6,7 @@ class CreateClients < ActiveRecord::Migration[5.1]
       t.text :allergy
       t.text :comment
       t.belongs_to :branch,index: true
+      t.belongs_to :discount,index: true
       t.timestamps
     end
   end

@@ -1,0 +1,15 @@
+<div class="row">
+  <div class="col-md-6 offset-md-2">
+    <%= form_for @branch,url: directory_branch_path(@branch.id),method: :put do |f| %>
+    <div class="form-group">
+      <%= f.label "Название" %>
+      <%= f.text_field :title, class: "form-control",value: @branch.title %>
+    </div>
+    <div class="form-group">
+      <%= f.label "Адресс" %>
+      <%= f.text_field :adress,class: "form-control",value: @branch.adress %>
+    </div>
+    <%= f.submit "Изменить", class: "btn btn-success form-control" %>
+    <% end %>
+  </div>
+</div>
