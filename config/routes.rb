@@ -9,9 +9,10 @@ Rails.application.routes.draw do
     resources :discounts do
       member do
         get "find_clients"
-        get "add_discount_client/:client_id",to: "discounts#add_discount_client",as: :add_discount_client
+        put "add_discount_client/:client_id",to: "discounts#add_discount_client",as: :add_discount_client
       end
     end
+    resources :single_discounts
     resources :users
   end
   resources :clients do

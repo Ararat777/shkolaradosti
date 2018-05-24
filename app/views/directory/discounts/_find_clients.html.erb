@@ -14,7 +14,7 @@
       <% if client.discount_id %>
       <td>У клиента уже есть скидка(<%= client.discount.title %>)</td>
       <% else %>
-      <td><%= link_to "Добавить скидку",add_discount_client_directory_discount_path(discount.id,client.id),remote: true %></td>
+      <td><%= link_to "Добавить скидку",add_discount_client_directory_discount_path(discount.id,client.id),method: :put, remote: true %></td>
       <% end %>
     </tr>
     <% end %>
