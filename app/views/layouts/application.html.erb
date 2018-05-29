@@ -39,7 +39,9 @@
             </div>
             <div class="text-center">
               <div class="list-group">
+                <% unless request.path == "/" %>
                 <%= render "layouts/second_menu_#{request.path.split('/')[1]}" %>
+                <% end %>
               </div>
             </div>
           <% end %>

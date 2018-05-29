@@ -16,14 +16,13 @@ Rails.application.routes.draw do
     resources :users
   end
   resources :clients do
-    resources :paid_services
-    resources :foods
     member do
       get "handle_visit"
     end
   end
   get "/cashbox", to: "cash_boxes#show"
   scope '/cashbox' do
+    resources :paid_services
     resources :incomes, only: [:show]
     resources :encashments, :consumptions, only: [:show,:new,:create]
     resources :transfers, only: [:show,:new,:create] do
