@@ -1,0 +1,10 @@
+<td><%= client.name %></td>
+<td><%= client.age %></td>
+<td>
+  <% if client.visited_days.find_by(:day => Date.today) %>
+    <i class="text-success">Пришел</i>
+  <% else %>
+    <%= link_to "Отметить",handle_visit_client_path(client.id),remote:true ,class: "btn btn-primary" %>
+  <% end %>
+</td>
+<td><%= link_to "Посмотреть",client_path(client.id) %></td>

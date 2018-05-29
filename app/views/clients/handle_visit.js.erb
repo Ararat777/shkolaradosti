@@ -1,1 +1,1 @@
-$("#calendar").html("<%= j render 'calendar',client: @client %>");
+$("#client_<%= @client.id %>").html("<%= j render 'client_row',client: @client %>");

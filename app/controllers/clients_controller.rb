@@ -36,8 +36,6 @@ class ClientsController < ApplicationController
   
   def handle_visit
     @client.visited_days.create(:day => Date.today)
-    @client.foods.last.count_days -= 1
-    @client.foods.last.save
     respond_to do |format|
       format.js {}
     end

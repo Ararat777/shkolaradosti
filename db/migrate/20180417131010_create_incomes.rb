@@ -1,6 +1,7 @@
 class CreateIncomes < ActiveRecord::Migration[5.1]
   def change
     create_table :incomes do |t|
+      t.string :title
       t.integer :service
       t.decimal :amount
       t.integer :client

@@ -1,17 +1,12 @@
 <%= month_calendar do |date| %>
 
-  <% visited = false %>
   <%= date.day %>
 
   <% client.visited_days.each do |visited_day| %>
       <% if date == visited_day.day %>
-        <% visited = true %>
         <div class="text-success">Пришел</div>
       <% end %>
   <% end %>
 
-  <% if !visited && date == Date.today %>
-    <div><%= link_to "Отметить",handle_visit_client_path(client.id),remote:true ,class: "btn btn-primary" %></div>
-  <% end %>
   
 <% end %>

@@ -3,15 +3,14 @@
     <tr>
       <th scope="col">Имя</th>
       <th scope="col">Возраст</th>
+      <th scope="col">Присутствие</th>
       <th scope="col">Действия</th>
     </tr>
   </thead>
   <tbody>
     <% clients.each do |client| %>
-    <tr>
-      <td><%= client.name %></td>
-      <td><%= client.age %></td>
-      <td><%= link_to "Посмотреть",client_path(client.id) %></td>
+    <tr id="client_<%= client.id %>">
+      <%= render "client_row",client: client %>
     </tr>
     <% end %>
   </tbody>

@@ -23,7 +23,7 @@ Rails.application.routes.draw do
   get "/cashbox", to: "cash_boxes#show"
   scope '/cashbox' do
     resources :paid_services
-    resources :incomes, only: [:show]
+    resources :incomes, only: [:show,:new,:create]
     resources :encashments, :consumptions, only: [:show,:new,:create]
     resources :transfers, only: [:show,:new,:create] do
       member do

@@ -85,6 +85,7 @@ ActiveRecord::Schema.define(version: 20180522220928) do
   end
 
   create_table "incomes", force: :cascade do |t|
+    t.string "title"
     t.integer "service"
     t.decimal "amount"
     t.integer "client"

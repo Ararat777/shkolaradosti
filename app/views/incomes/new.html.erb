@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="col-md-5 offset-md-2">
+    <%= form_for @income,url: incomes_path do |f| %>
+    <div class="form-group">
+      <%= f.label "За что" %>
+      <%= f.text_field :title, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label "Cумма" %>
+      <%= f.text_field :amount,class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label "Комментарий" %>
+      <%= f.text_area :comment,class: "form-control" %>
+    </div>
+    <%= f.submit "Оформить приход", class: "btn btn-success form-control" %>
+    <% end %>
+  </div>
+</div>
