@@ -9,6 +9,7 @@ class CreatePaidServices < ActiveRecord::Migration[5.1]
       t.boolean :status,default: true
       t.float :amount,default: 0
       t.float :required_amount
+      t.float :lack,default: 0
       t.timestamps
     end
   end

@@ -13,7 +13,7 @@ class ClientsController < ApplicationController
       format.html {}
       format.js {}
     end
-    
+    @visited_clients = Client.joins(:visited_days).where(:visited_days => {day: Date.today})
   end
   
   def show

@@ -41,6 +41,8 @@
               <div class="list-group">
                 <% unless request.path == "/" %>
                 <%= render "layouts/second_menu_#{request.path.split('/')[1]}" %>
+                <% else %>
+                <%= render "layouts/second_menu_clients" %>
                 <% end %>
               </div>
             </div>

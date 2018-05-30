@@ -14,7 +14,6 @@
       <th>Требуемая сумма</th>
       <th>Состояние</th>
       <th>Оплата</th>
-      <th>Действия</th>
     </tr>
   </thead>
   <tbody>
@@ -33,18 +32,14 @@
         <% end %>
       </td>
       <td>
-        <% if item.amount == item.required_amount %>
+        <% if item.lack == 0 %>
         <i class="text-success">Оплачено</i>
         <% elsif item.amount == 0 %>
         <i class="text-danger">Неоплачено</i>
         <%= link_to "Оформить доплату", edit_paid_service_path(@client.id,item.id),class: "btn btn-primary" %>
         <% else %>
-        <i class="text-warning">Неполная оплата(Недостаточно <%= item.required_amount - item.amount %>грн)</i>
-        <% end %>
-      </td>
-      <td>
-        <% if item.check_status || item.amount != item.required_amount %>
-        <%= link_to "Изменить", edit_paid_service_path(item.id),class: "btn btn-primary" %>
+        <i class="text-warning">Неполная оплата(Недостаточно <%= item.lack %>грн)</i>
+        <%= link_to "Доплатить", edit_paid_service_path(item.id),class: "btn btn-primary" %>
         <% end %>
       </td>
     </tr>

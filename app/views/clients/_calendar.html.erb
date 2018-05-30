@@ -4,7 +4,9 @@
 
   <% client.visited_days.each do |visited_day| %>
       <% if date == visited_day.day %>
-        <div class="text-success">Пришел</div>
+        <div class="text-success text-center h3"><i class="fa fa-check" aria-hidden="true"></i></div>
+      <% elsif date < Date.today && !date.strftime("%A").match(/Saturday|Sunday/) %>
+        <div class="text-danger text-center h3"><i class="fa fa-times" aria-hidden="true"></i></div>
       <% end %>
   <% end %>
 

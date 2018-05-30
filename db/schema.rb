@@ -105,6 +105,7 @@ ActiveRecord::Schema.define(version: 20180522220928) do
     t.boolean "status", default: true
     t.float "amount", default: 0.0
     t.float "required_amount"
+    t.float "lack", default: 0.0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["client_id"], name: "index_paid_services_on_client_id"

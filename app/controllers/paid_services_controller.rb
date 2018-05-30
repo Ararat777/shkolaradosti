@@ -42,9 +42,9 @@ class PaidServicesController < ApplicationController
   end
   
   def update
-    if @paid_service.update(:amount => (@paid_service.amount + paid_service_params[:amount].to_f), :end_date => paid_service_params[:end_date])
+    if @paid_service.update(:amount => (@paid_service.amount + paid_service_params[:amount].to_f))
       if @paid_service.amount > 0
-        current_cash_box.incomes.create(:service => @paid_service.service.id, :client => @client.id, :amount => paid_service_params[:amount], :comment => "Доплата за услугу #{@paid_service.service.title}")
+        current_cash_box.incomes.create(:service => @paid_service.service.id, :client => @paid_service.client.id, :amount => paid_service_params[:amount], :comment => "Доплата за услугу #{@paid_service.service.title}")
       end
       redirect_to cashbox_path
     else

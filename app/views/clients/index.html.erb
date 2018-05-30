@@ -1,13 +1,19 @@
 <div class="row">
-  <h1>Все клиенты</h1>
   <div class="col-md-4">
-    <%= form_for :q,url: clients_path,method: :get,remote: true do |f| %>
-      <div class="form-group">
-        <%= f.text_field :name, class: "form-control" %>
-        <%= f.submit "Найти",class: "btn btn-primary" %>
-      </div>
-    <% end %>
+  <%= form_for :q,url: clients_path,method: :get,remote: true do |f| %>
+    <div class="form-group">
+      <%= f.text_field :name, class: "form-control" %>
+      <%= f.submit "Найти",class: "btn btn-primary" %>
+    </div>
+  <% end %>
   </div>
+  <div class="col-md-4">
+    Сегодняшняя дата: <%= Date.today %>
+  </div>
+  <div class="col-md-4">
+    Присутствует детей: <%= @visited_clients.size %>
+  </div>
+
 </div>
 <div id="clients">
   <%= render "clients",clients: @clients %>

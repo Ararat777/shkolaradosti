@@ -1,18 +1,14 @@
 <%= form_for @paid_service,url: paid_service_path(@paid_service.id),method: :put do |f| %>
 <div class="form-group">
-  <%= f.label "Дата окончания" %>
-  <%= f.date_field :end_date, value: @paid_service.end_date,class: "form-control" %>
-</div>
-<div class="form-group">
   <%= f.label "Требуемая сумма" %>
   <%= f.text_field :required_amount, value: @paid_service.required_amount,class: "form-control", disabled: "disabled" %>
 </div>
-<% if @paid_service.required_amount != @paid_service.amount %>
-<i class="text-warning">Недостаточно <%= @paid_service.required_amount - @paid_service.amount %>грн</i>
+<% if @paid_service.lack > 0 %>
+<i class="text-warning">Недостаточно <%= @paid_service.lack %>грн</i>
 <% end %>
 <div class="form-group">
   <%= f.label "Сумма" %>
-  <%= f.text_field :amount, value: @paid_service.amount ,class: "form-control" %>
+  <%= f.number_field :amount,class: "form-control",max: @paid_service.lack,value: @paid_service.lack  %>
 </div>
 <%= f.submit "Оформить", class: "btn btn-success" %>
 <% end %>
