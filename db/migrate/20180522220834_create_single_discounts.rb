@@ -4,7 +4,7 @@ class CreateSingleDiscounts < ActiveRecord::Migration[5.1]
       t.string :title
       t.integer :percent
       t.integer :count
-      t.boolean :active
+      t.boolean :active,default: true
       t.text :comment
 
       t.timestamps

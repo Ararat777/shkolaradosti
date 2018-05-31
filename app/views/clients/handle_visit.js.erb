@@ -1,1 +1,3 @@
 $("#client_<%= @client.id %>").html("<%= j render 'client_row',client: @client %>");
+var countVisitedClients = $("#visited_clients").text();
+$("#visited_clients").text(+countVisitedClients + 1);

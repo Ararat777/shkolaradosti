@@ -28,6 +28,11 @@ class Directory::SingleDiscountsController < ApplicationController
     end
   end
   
+  def destroy
+    @discount = SingleDiscount.find(params[:id])
+    @discount.destroy
+    redirect_to directory_single_discounts_path
+  end
   
   private
   

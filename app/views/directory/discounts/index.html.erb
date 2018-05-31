@@ -12,6 +12,7 @@
           <th scope="col">Название</th>
           <th scope="col">Количество клиентов</th>
           <th scope="col">Процент</th>
+          <th scope="col">Активность</th>
           <th scope="col">Комментарий</th>
           <th scope="col">Действия</th>
         </tr>
@@ -22,8 +23,9 @@
           <td><%= item.title %></td>
           <td><%= item.clients.size %></td>
           <td><%= item.percent %></td>
+          <td><%= item.active ? "Активно" : "Неактивно" %></td>
           <td><%= item.comment %></td>
-          <td><%= link_to "Просмотреть", directory_discount_path(item.id) %> | <%= link_to "Изменить", edit_directory_discount_path(item.id) %></td>
+          <td><%= link_to "Просмотреть", directory_discount_path(item.id) %> | <%= link_to "Изменить", edit_directory_discount_path(item.id) %>| <%= link_to "Удалить", directory_discount_path(item.id),method: :delete,data: {confirm: "Действительно удалить?"} %></td>
         </tr>
         <% end %>
       </tbody>

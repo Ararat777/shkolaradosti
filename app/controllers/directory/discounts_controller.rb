@@ -32,6 +32,12 @@ class Directory::DiscountsController < ApplicationController
     end
   end
   
+  def destroy
+    @discount = Discount.find(params[:id])
+    @discount.destroy
+    redirect_to directory_discounts_path
+  end
+  
   def find_clients
     @discount = Discount.find(params[:id])
     @clients = Client.where("name LIKE ?", "%#{params[:q][:name]}%")

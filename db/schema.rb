@@ -57,7 +57,7 @@ ActiveRecord::Schema.define(version: 20180522220928) do
   create_table "discounts", force: :cascade do |t|
     t.string "title"
     t.integer "percent"
-    t.boolean "active"
+    t.boolean "active", default: true
     t.text "comment"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -133,7 +133,7 @@ ActiveRecord::Schema.define(version: 20180522220928) do
     t.string "title"
     t.integer "percent"
     t.integer "count"
-    t.boolean "active"
+    t.boolean "active", default: true
     t.text "comment"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
