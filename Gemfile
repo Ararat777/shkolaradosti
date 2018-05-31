@@ -10,6 +10,8 @@ gem 'devise'
 gem 'jquery-rails'
 gem "simple_calendar", "~> 2.0"
 gem 'font-awesome-sass'
+gem 'prawn'
+gem 'responders'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.4'
 # Use postgresql as the database for Active Record

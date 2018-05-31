@@ -19,9 +19,11 @@ class ClientsController < ApplicationController
   def show
     @paid_services = @client.paid_services
     @foods = @client.foods
+    @parent = @client.parent
   end
   
   def new
+    @parent = Parent.new
     @client = Client.new
   end
   
@@ -44,7 +46,7 @@ class ClientsController < ApplicationController
   private
   
   def client_params
-    params.require(:client).permit(:name,:age,:allergy,:comment)
+    params.require(:client).permit(:name,:age,:allergy,:comment,parent_attributes: [:father_name,:father_adress,:father_work_adress,:father_phone,:father_additional_phone,:father_birthdate,:father_email,:mother_name,:mother_adress,:mother_work_adress,:mother_phone,:mother_additional_phone,:mother_birthdate,:mother_email])
   end
   
   def set_client

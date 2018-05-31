@@ -11,7 +11,7 @@
       <tr>
         <td><%= item.name %></td>
         <td><%= item.branch.title %></td>
-        <td></td>
+        <td><%= link_to "Удалить",remove_discount_client_directory_discount_path(discount.id,item.id),method: :delete %></td>
       </tr>
       <% end %>
     </tbody>

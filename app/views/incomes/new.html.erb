@@ -2,6 +2,14 @@
   <div class="col-md-5 offset-md-2">
     <%= form_for @income,url: incomes_path do |f| %>
     <div class="form-group">
+      <%= f.label "Кто принимает" %>
+      <%= f.text_field :acceptor, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label "От кого" %>
+      <%= f.select :client, current_branch.clients.collect{|s| [s.name, s.id]},{},{class: "custom-select",id: "select_client" } %>
+    </div>
+    <div class="form-group">
       <%= f.label "За что" %>
       <%= f.text_field :title, class: "form-control" %>
     </div>

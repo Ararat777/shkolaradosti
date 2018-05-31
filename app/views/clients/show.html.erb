@@ -4,6 +4,7 @@
   <%= render "calendar",client: @client %>
 </div>
 <h3>Оформленные услуги</h3>
+<%= link_to "Оформить услугу",new_paid_service_path,class: "btn btn-success" %>
 <table class="table">
   <thead>
     <tr>
@@ -67,4 +68,50 @@
     <% end %>
   </tbody>
 </table>
+<h3>Информация о родителях</h3>
+<table class="table-bordered mb-5">
+  <tbody>
+   <tr>
+     <th class="left-side"></th>
+     <th class="text-center">Папа</th>
+     <th class="text-center">Мама</th>
+   </tr>
+   <tr>
+     <th>ФИО</th>
+     <td class="text-center"><%= @parent.father_name %></td>
+     <td class="text-center"><%= @parent.mother_name %></td>
+   </tr>
+    <tr>
+     <th>Номер телефона</th>
+     <td class="text-center"><%= @parent.father_phone %></td>
+     <td class="text-center"><%= @parent.mother_phone %></td>
+   </tr>
+    <tr>
+     <th>Дополнительный номер телефона</th>
+     <td class="text-center"><%= @parent.father_additional_phone %></td>
+     <td class="text-center"><%= @parent.mother_additional_phone %></td>
+   </tr>
+    <tr>
+     <th>Адрес</th>
+     <td class="text-center"><%= @parent.father_adress %></td>
+     <td class="text-center"><%= @parent.mother_adress %></td>
+   </tr>
+    <tr>
+     <th>Рабочий адрес</th>
+     <td class="text-center"><%= @parent.father_work_adress %></td>
+     <td class="text-center"><%= @parent.mother_work_adress %></td>
+   </tr>
+    <tr>
+     <th>Дата рождения</th>
+     <td class="text-center"><%= @parent.father_birthdate %></td>
+     <td class="text-center"><%= @parent.mother_birthdate %></td>
+   </tr>
+    <tr>
+     <th>Email</th>
+     <td class="text-center"><%= @parent.father_email %></td>
+     <td class="text-center"><%= @parent.mother_email %></td>
+   </tr>
+  </tbody>
+</table>
+
 

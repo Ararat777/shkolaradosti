@@ -28,7 +28,7 @@ class PaidServicesController < ApplicationController
       if @paid_service.save
         if @paid_service.amount > 0
 
-          current_cash_box.incomes.create(:service => paid_service_params[:service_id], :client => paid_service_params[:client_id], :amount => paid_service_params[:amount], :comment => "Оформление услуги")
+          current_cash_box.incomes.create(:acceptor => current_branch.title,:service => paid_service_params[:service_id], :client => paid_service_params[:client_id], :amount => paid_service_params[:amount], :comment => "Оформление услуги")
         end
         redirect_to cashbox_path
       else

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180522220928) do
+ActiveRecord::Schema.define(version: 20180531110741) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,10 +38,12 @@ ActiveRecord::Schema.define(version: 20180522220928) do
     t.text "comment"
     t.bigint "branch_id"
     t.bigint "discount_id"
+    t.bigint "parent_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["branch_id"], name: "index_clients_on_branch_id"
     t.index ["discount_id"], name: "index_clients_on_discount_id"
+    t.index ["parent_id"], name: "index_clients_on_parent_id"
   end
 
   create_table "consumptions", force: :cascade do |t|
@@ -85,6 +87,7 @@ ActiveRecord::Schema.define(version: 20180522220928) do
   end
 
   create_table "incomes", force: :cascade do |t|
+    t.string "acceptor"
     t.string "title"
     t.integer "service"
     t.decimal "amount"
@@ -110,6 +113,25 @@ ActiveRecord::Schema.define(version: 20180522220928) do
     t.datetime "updated_at", null: false
     t.index ["client_id"], name: "index_paid_services_on_client_id"
     t.index ["service_id"], name: "index_paid_services_on_service_id"
+  end
+
+  create_table "parents", force: :cascade do |t|
+    t.string "father_name"
+    t.string "father_phone"
+    t.string "father_additional_phone"
+    t.string "father_adress"
+    t.string "father_work_adress"
+    t.date "father_birthdate"
+    t.string "father_email"
+    t.string "mother_name"
+    t.string "mother_phone"
+    t.string "mother_additional_phone"
+    t.string "mother_adress"
+    t.string "mother_work_adress"
+    t.date "mother_birthdate"
+    t.string "mother_email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "roles", force: :cascade do |t|

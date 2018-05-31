@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       member do
         get "find_clients"
         put "add_discount_client/:client_id",to: "discounts#add_discount_client",as: :add_discount_client
+        delete "remove_discount_client/:client_id",to: "discounts#remove_discount_client",as: :remove_discount_client
       end
     end
     resources :single_discounts
@@ -23,7 +24,11 @@ Rails.application.routes.draw do
   get "/cashbox", to: "cash_boxes#show"
   scope '/cashbox' do
     resources :paid_services
-    resources :incomes, only: [:show,:new,:create]
+    resources :incomes, only: [:show,:new,:create] do
+      member do
+        get "download_pdf.pdf",to: "incomes#download_pdf",as: "download_pdf"
+      end
+    end
     resources :encashments, :consumptions, only: [:show,:new,:create]
     resources :transfers, only: [:show,:new,:create] do
       member do

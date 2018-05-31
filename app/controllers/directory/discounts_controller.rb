@@ -55,6 +55,13 @@ class Directory::DiscountsController < ApplicationController
     end
   end
   
+  def remove_discount_client
+    @discount = Discount.find(params[:id])
+    @client = Client.find(params[:client_id])
+    @client.update(:discount_id => nil)
+    redirect_to directory_discount_path(@discount.id)
+  end
+  
   private
   
   def discount_params

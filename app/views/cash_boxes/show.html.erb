@@ -3,6 +3,7 @@
     <table class="table">
       <thead>
         <tr>
+          <th>Кто принял</th>
           <th>Кто оплатил</th>
           <th>Услуга</th>
           <th>Сумма оплаты</th>
@@ -14,12 +15,13 @@
       <tbody>
         <% @incomes.each do |income| %>
         <tr>
+          <td><%= income.acceptor %></td>
           <td><%= income.client ? Client.find(income.client).name : "" %></td>
           <td><%= income.service ? Service.find(income.service).title : "" %></td>
           <td><%= income.amount %>грн</td>
           <td><%= income.created_at %></td>
           <td><%= income.comment %></td>
-          <td><%= link_to "Просмотреть", income_path(income.id) %></td>
+          <td><%= link_to "Скачать PDF", download_pdf_income_path(income.id) %></td>
         </tr>
         <% end %>
         <tr>
