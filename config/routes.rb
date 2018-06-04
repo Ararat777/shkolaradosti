@@ -24,7 +24,7 @@ Rails.application.routes.draw do
   get "/cashbox", to: "cash_boxes#show"
   scope '/cashbox' do
     resources :paid_services
-    resources :incomes, only: [:show,:new,:create] do
+    resources :incomes, only: [:index,:show,:new,:create] do
       member do
         get "download_pdf.pdf",to: "incomes#download_pdf",as: "download_pdf"
       end

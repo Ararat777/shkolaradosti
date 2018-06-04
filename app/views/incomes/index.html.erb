@@ -1,0 +1,46 @@
+<h3>Фильтр</h3>
+<%= form_for :q,url: incomes_path,html: {class: "form-inline"},mehod: :get do |f| %>
+  <div class="input-group mr-3">
+    <%= f.select :client, current_branch.clients.collect{|s| [s.name, s.id]},{include_blank: "Выберите клиента"},{class: "custom-select",id: "select_client" } %>
+  </div>
+  <div class="input-group mr-3">
+    <%= f.label "C" %>
+    <%= f.date_field :start_date, class: "form-control" %>
+  </div>
+  <div class="input-group">
+    <%= f.label "По" %>
+    <%= f.date_field :end_date, class: "form-control" %>
+  </div>
+<% end %>
+
+<h4 class="text-center text-success">Приходы</h4>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Кто принял</th>
+        <th>Кто оплатил</th>
+        <th>Услуга</th>
+        <th>Сумма оплаты</th>
+        <th>Дата и время</th>
+        <th>Комментарий</th>
+        <th>Действия</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @incomes.each do |income| %>
+      <tr>
+        <td><%= income.acceptor %></td>
+        <td><%= income.client ? Client.find(income.client).name : "" %></td>
+        <td><%= income.service ? Service.find(income.service).title : "" %></td>
+        <td><%= income.amount %>грн</td>
+        <td><%= income.created_at %></td>
+        <td><%= income.comment %></td>
+        <td><%= link_to "Скачать PDF", download_pdf_income_path(income.id) %></td>
+      </tr>
+      <% end %>
+      <tr>
+        <td colspan="2">Сумма приходов:</td>
+        <td colspan="4"><%= @incomes.sum(:amount) %>грн</td>
+      </tr>
+    </tbody>
+  </table>

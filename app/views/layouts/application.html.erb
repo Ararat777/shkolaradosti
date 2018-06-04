@@ -32,17 +32,22 @@
           <%= link_to "Справочники", directory_path,class: 'nav-link' %>
         </li>
       </ul>
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <%= link_to "Выход", destroy_user_session_path,method: :delete,class: 'nav-link' %>
-        </li>
-      </ul>
     </div>
       <% end %>
   </nav>
     <div class="container-fluid">
       <div class="row">
-        <div class="col-md-3">
+        <% if user_signed_in? %>
+        <div class="podl">
+			<p><b>Сегодня:</b> <%= Date.today %></p>
+			<p><b>Детей:</b> <i id="visited_clients"><%= current_branch.clients.joins(:visited_days).where(:visited_days => {day: Date.today}).size %></i></p>
+			<p><b>Новых уведомлений:</b> <i>3</i></p>
+            <%= link_to destroy_user_session_path,method: :delete,class: 'nav-link exit' do %>
+                <i class="fas fa-sign-out-alt"></i>Выход
+            <% end %>
+		</div>
+        <% end %>
+        <div class="col-md-3 leftbar">
           <% if user_signed_in? %>
             <h4 class="text-center"><%= current_branch.title %></h4>
             <div class="text-center">

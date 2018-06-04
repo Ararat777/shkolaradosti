@@ -13,7 +13,6 @@ class ClientsController < ApplicationController
       format.html {}
       format.js {}
     end
-    @visited_clients = Client.joins(:visited_days).where(:visited_days => {day: Date.today})
   end
   
   def show
@@ -37,7 +36,11 @@ class ClientsController < ApplicationController
   end
   
   def handle_visit
-    @client.visited_days.create(:day => Date.today)
+    
+    unless @client.visited_days.find_by(:day => Date.today)
+      @client.visited_days.create(:day => Date.today)
+    end
+    
     respond_to do |format|
       format.js {}
     end

@@ -8,7 +8,7 @@
 <% end %>
 <div class="form-group">
   <%= f.label "Сумма" %>
-  <%= f.number_field :amount,class: "form-control",max: @paid_service.lack,value: @paid_service.lack  %>
+  <%= f.number_field :amount,class: "form-control",min: 0,max: @paid_service.lack,value: @paid_service.lack  %>
 </div>
 <%= f.submit "Оформить", class: "btn btn-success" %>
 <% end %>
