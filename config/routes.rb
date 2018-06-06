@@ -15,6 +15,9 @@ Rails.application.routes.draw do
     end
     resources :single_discounts
     resources :users
+    resources :months do
+      resources :exceptional_days
+    end
   end
   resources :clients do
     member do
@@ -29,8 +32,8 @@ Rails.application.routes.draw do
         get "download_pdf.pdf",to: "incomes#download_pdf",as: "download_pdf"
       end
     end
-    resources :encashments, :consumptions, only: [:show,:new,:create]
-    resources :transfers, only: [:show,:new,:create] do
+    resources :encashments, :consumptions, only: [:index,:show,:new,:create]
+    resources :transfers, only: [:index,:show,:new,:create] do
       member do
         put "confirme"
       end

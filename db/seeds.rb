@@ -32,3 +32,12 @@ Role.delete_all
 Role.create(:title => "Администратор")
 Role.create(:title => "Бухгалтер")
 Role.create(:title => "Завхоз")
+
+
+
+Month.delete_all
+year = Date.today.year
+months = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь']
+months.each_with_index do |title,number|
+  Month.create(:title => title,:number => number + 1,:year => year)
+end

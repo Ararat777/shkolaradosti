@@ -16,3 +16,15 @@
 //= require popper
 //= require bootstrap
 //= require_tree .
+
+
+$(document).ready(function(){
+  $('.filter-form').submit(function(){
+    $('.filter-form :input').each(function(){
+      if($(this).val() == ''){
+        $(this).prop('name', '');
+      }   
+    });
+  });
+  
+});

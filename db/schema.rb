@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180531110741) do
+ActiveRecord::Schema.define(version: 20180606101543) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -74,6 +74,16 @@ ActiveRecord::Schema.define(version: 20180531110741) do
     t.index ["cash_box_id"], name: "index_encashments_on_cash_box_id"
   end
 
+  create_table "exceptional_days", force: :cascade do |t|
+    t.string "title"
+    t.date "day"
+    t.boolean "is_holiday"
+    t.bigint "month_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["month_id"], name: "index_exceptional_days_on_month_id"
+  end
+
   create_table "foods", force: :cascade do |t|
     t.float "price"
     t.float "amount", default: 0.0
@@ -97,6 +107,15 @@ ActiveRecord::Schema.define(version: 20180531110741) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["cash_box_id"], name: "index_incomes_on_cash_box_id"
+  end
+
+  create_table "months", force: :cascade do |t|
+    t.string "title"
+    t.integer "number"
+    t.integer "year"
+    t.integer "work_days_size"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "paid_services", force: :cascade do |t|
@@ -203,6 +222,13 @@ ActiveRecord::Schema.define(version: 20180531110741) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["client_id"], name: "index_visited_days_on_client_id"
+  end
+
+  create_table "work_days", force: :cascade do |t|
+    t.string "title"
+    t.integer "work_days_count", default: 20
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

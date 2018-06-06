@@ -11,6 +11,7 @@ module ShkolaRadosti
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.1
     config.time_zone = "Kyiv"
+    config.active_record.default_timezone = :local
     config.active_record.belongs_to_required_by_default = false
     config.assets.paths << Rails.root.join("app", "assets", "fonts")
     # Settings in config/environments/* take precedence over those specified here.

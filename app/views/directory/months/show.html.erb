@@ -1,0 +1,34 @@
+<h4>Месяц <%= @month.title %></h4>
+<p>Количетсов рабочих дней: <%= @month.work_days_size %> </p>
+
+<%= form_for :exceptional_day,url: directory_month_exceptional_days_path(@month.id),html: {class: "form-inline filter-form"} do |f| %>
+  <div class="input-group">
+    <%= f.date_field :day, class:"form-control",min: Date.new(@month.year,@month.number),max: Date.new(@month.year,@month.number).end_of_month %>
+  </div>
+  <div class="input-group">
+    <%= f.label "Выходной" %>
+    <%= f.check_box :is_holiday, class:"form-control",checked: "checked" %>
+  </div>
+  <%= f.submit "Добавить",class: "btn ml-3",name: nil %>
+<% end %>
+
+<table class="table">
+    <thead>
+      <tr>
+        <th>День</th>
+        <th>Дата</th>
+        <th>Статус</th>
+        <th>Действия</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @exceptional_days.each do |item| %>
+      <tr>
+        <td><%= item.title %></td>
+        <td><%= item.day %></td>
+        <td><%= item.is_holiday ? "Выходной" : "Рабочий" %></td>
+        <td><%= link_to "Удалить",directory_month_exceptional_day_path(@month.id,item.id),method: :delete %></td>
+      </tr>
+      <% end %>
+    </tbody>
+</table>
