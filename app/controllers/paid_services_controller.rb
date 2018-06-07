@@ -6,7 +6,7 @@ class PaidServicesController < ApplicationController
   end
   
   def new
-    @paid_service = PaidService.new
+    @paid_service = PaidService.new                  
   end
   
   def create
@@ -49,6 +49,15 @@ class PaidServicesController < ApplicationController
       redirect_to cashbox_path
     else
       render :edit
+    end
+  end
+  
+  def calculate_required_amount
+    @paid_service = PaidService.new
+    @paid_service.calculate_required_amount(
+      paid_service_params[:service_id],paid_service_params[:start_date].to_date,paid_service_params[:end_date].to_date)
+    respond_to do |format|
+      format.js {render :js => "$('#require-price').val(#{@paid_service.required_amount});",status: 200}
     end
   end
   

@@ -27,4 +27,30 @@ $(document).ready(function(){
     });
   });
   
+  var select = $("#select_service")
+  
+  var price = select.find("option:selected").data('price');
+  
+  $("#paid_service_service_id").val(select.val());
+  
+  $('#require-price').val(price);
+  
+  $('#amount').attr("max",price);
+  
+  select.on("change",function(){
+    price = $(this).find("option:selected").data('price');
+    $('#require-price').val(price);
+    $('#amount').attr("max",price);
+    $("#paid_service_service_id").val(select.val());
+  });
+  
+  $("#new_paid_service").find(".date").on("change",function(){
+    if($(this).attr("id") == "paid_service_start_date"){
+      $("#start_date").val($(this).val());
+    }else{
+      $("#end_date").val($(this).val());
+    }
+  })
 });
+
+  

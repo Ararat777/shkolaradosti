@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   get "/cashbox", to: "cash_boxes#show"
   scope '/cashbox' do
     resources :paid_services
+    post "/calculate_required_amount",to: "paid_services#calculate_required_amount"
     resources :incomes, only: [:index,:show,:new,:create] do
       member do
         get "download_pdf.pdf",to: "incomes#download_pdf",as: "download_pdf"
