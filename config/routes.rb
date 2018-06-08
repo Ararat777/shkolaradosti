@@ -39,6 +39,8 @@ Rails.application.routes.draw do
         put "confirme"
       end
     end
+    get "/reports/incomes",to: "reports#incomes"
+    get "/reports/incomes.pdf",to: "reports#incomes",as: :report_incomes_pdf
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

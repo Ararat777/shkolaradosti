@@ -28,6 +28,6 @@ class PaidService < ApplicationRecord
     calculated_work_days += ExceptionalDay.where(:is_holiday => false,:day => start_date..end_date).size
     calculated_work_days -= ExceptionalDay.where(:is_holiday => true,:day => start_date..end_date).size
     month_work_days = Month.find_by(:year => start_date.year,:number => start_date.month).work_days_size
-    self.required_amount = (service.price / month_work_days) * calculated_work_days
+    self.required_amount = ((service.price / month_work_days) * calculated_work_days).round
   end
 end
