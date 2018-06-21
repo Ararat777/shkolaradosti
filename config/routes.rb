@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { sessions: 'users/sessions' }
   root "clients#index"
   get "/directory", to: "directories#index"
   namespace :directory do
@@ -39,8 +39,8 @@ Rails.application.routes.draw do
         put "confirme"
       end
     end
-    get "/reports/incomes",to: "reports#incomes"
-    get "/reports/incomes.pdf",to: "reports#incomes",as: :report_incomes_pdf
   end
+  resources :reports, only: [:index,:new]
+  post "/make_report.pdf",to: "reports#make_report",as: :make_report_pdf
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

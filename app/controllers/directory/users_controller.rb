@@ -1,4 +1,4 @@
-class Directory::UsersController < ApplicationController
+class Directory::UsersController < DirectoriesController
   def index
     @users = User.all
   end

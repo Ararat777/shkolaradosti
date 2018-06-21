@@ -17,9 +17,9 @@
         <tr>
           <td><%= income.acceptor %></td>
           <td><%= Client.find(income.client).name %></td>
-          <td><%= income.service ? Service.find(income.service).title : income.title %></td>
+          <td><%= income.service ? Service.find(income.service).title : income.income_title %></td>
           <td><%= income.amount %>грн</td>
-          <td><%= income.created_at %></td>
+          <td><%= income.created_at.strftime("%F %T") %></td>
           <td><%= income.comment %></td>
           <td><%= link_to "Скачать PDF", download_pdf_income_path(income.id) %></td>
         </tr>
@@ -89,10 +89,10 @@
       <tbody>
         <% @consumptions.each do |item| %>
         <tr>
-          <td><%= item.title %></td>
+          <td><%= item.consumption_title %></td>
           <td><%= item.amount %>грн</td>
           <td><%= item.comment %></td>
-          <td><%= item.created_at %></td>
+          <td><%= item.created_at.strftime("%F %T") %></td>
         </tr>
         <% end %>
         <tr>
@@ -115,7 +115,7 @@
         <tr>
           <td><%= item.amount %>грн</td>
           <td><%= item.comment %></td>
-          <td><%= item.created_at %></td>
+          <td><%= item.created_at.strftime("%F %T") %></td>
         </tr>
         <% end %>
       </tbody>

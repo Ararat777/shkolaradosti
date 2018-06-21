@@ -1,4 +1,5 @@
 class Transfer < ApplicationRecord
+  has_many :reports,as: :reportable
   enum :status => [:pending, :confirmed]
   
   def exec_transfer

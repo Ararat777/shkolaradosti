@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180606101543) do
+ActiveRecord::Schema.define(version: 20180619134212) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,8 +47,8 @@ ActiveRecord::Schema.define(version: 20180606101543) do
   end
 
   create_table "consumptions", force: :cascade do |t|
-    t.string "title"
-    t.decimal "amount"
+    t.string "consumption_title"
+    t.float "amount"
     t.text "comment"
     t.bigint "cash_box_id"
     t.datetime "created_at", null: false
@@ -66,7 +66,7 @@ ActiveRecord::Schema.define(version: 20180606101543) do
   end
 
   create_table "encashments", force: :cascade do |t|
-    t.decimal "amount"
+    t.float "amount"
     t.text "comment"
     t.bigint "cash_box_id"
     t.datetime "created_at", null: false
@@ -98,9 +98,9 @@ ActiveRecord::Schema.define(version: 20180606101543) do
 
   create_table "incomes", force: :cascade do |t|
     t.string "acceptor"
-    t.string "title"
+    t.string "income_title"
     t.integer "service"
-    t.decimal "amount"
+    t.float "amount"
     t.integer "client"
     t.text "comment"
     t.bigint "cash_box_id"
@@ -153,6 +153,16 @@ ActiveRecord::Schema.define(version: 20180606101543) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "reports", force: :cascade do |t|
+    t.string "title"
+    t.string "path"
+    t.string "reportable_type"
+    t.bigint "reportable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reportable_type", "reportable_id"], name: "index_reports_on_reportable_type_and_reportable_id"
+  end
+
   create_table "roles", force: :cascade do |t|
     t.string "title"
     t.datetime "created_at", null: false
@@ -183,7 +193,7 @@ ActiveRecord::Schema.define(version: 20180606101543) do
   create_table "transfers", force: :cascade do |t|
     t.integer "from_cashbox"
     t.integer "to_cashbox"
-    t.decimal "amount"
+    t.float "amount"
     t.integer "status", default: 0
     t.integer "kind", default: 0
     t.text "comment"
@@ -222,13 +232,6 @@ ActiveRecord::Schema.define(version: 20180606101543) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["client_id"], name: "index_visited_days_on_client_id"
-  end
-
-  create_table "work_days", force: :cascade do |t|
-    t.string "title"
-    t.integer "work_days_count", default: 20
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
 end

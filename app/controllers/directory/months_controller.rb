@@ -1,4 +1,4 @@
-class Directory::MonthsController < ApplicationController
+class Directory::MonthsController < DirectoriesController
   
   def index
     @months = Month.where(:year => Date.today.year).order(:number)

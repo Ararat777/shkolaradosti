@@ -6,7 +6,6 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.1]
       t.string :name
       t.string :phone
       t.string :adress
-      t.boolean :admin, default: false
       t.belongs_to :role
       t.belongs_to :branch
       ## Database authenticatable

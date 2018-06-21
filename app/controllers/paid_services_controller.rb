@@ -16,7 +16,7 @@ class PaidServicesController < ApplicationController
       if @paid_service.update(:end_date => paid_service_params[:end_date], :required_amount => @paid_service.required_amount + paid_service_params[:required_amount].to_f, :amount => @paid_service.amount + paid_service_params[:amount].to_f)
         
         if paid_service_params[:amount].to_i > 0
-          current_cash_box.incomes.create(:service => paid_service_params[:service_id], :client => paid_service_params[:client_id], :amount => paid_service_params[:amount], :comment => "Оформление услуги")
+          current_cash_box.incomes.create(:acceptor => current_branch.title,:service => paid_service_params[:service_id], :client => paid_service_params[:client_id], :amount => paid_service_params[:amount], :comment => "Оформление услуги")
         end
         redirect_to cashbox_path
         
@@ -57,7 +57,7 @@ class PaidServicesController < ApplicationController
     @paid_service.calculate_required_amount(
       paid_service_params[:service_id],paid_service_params[:start_date].to_date,paid_service_params[:end_date].to_date)
     respond_to do |format|
-      format.js {render :js => "$('#require-price').val(#{@paid_service.required_amount});",status: 200}
+      format.js {render :js => "$('#require-price').val(#{@paid_service.required_amount.round});",status: 200}
     end
   end
   

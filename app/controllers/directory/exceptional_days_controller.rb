@@ -1,4 +1,4 @@
-class Directory::ExceptionalDaysController < ApplicationController
+class Directory::ExceptionalDaysController < DirectoriesController
   def create
     @month = Month.find(params[:month_id])
     @exceptional_day = @month.exceptional_days.new(days_params)

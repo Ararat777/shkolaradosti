@@ -1,4 +1,4 @@
-class Directory::DiscountsController < ApplicationController
+class Directory::DiscountsController < DirectoriesController
   
   def index
     @discounts = Discount.all

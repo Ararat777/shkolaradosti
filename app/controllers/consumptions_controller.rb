@@ -33,6 +33,6 @@ class ConsumptionsController < ApplicationController
   end
   
   def consumption_params
-    params.require(:consumption).permit(:title,:amount,:comment)
+    params.require(:consumption).permit(:consumption_title,:amount,:comment)
   end
 end

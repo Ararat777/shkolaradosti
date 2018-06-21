@@ -16,31 +16,42 @@
     <% if user_signed_in? %>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <%= link_to "Финансы#{if pending_transfers.size > 0 then '(' + pending_transfers.size.to_s + ')' end}",cashbox_path, class: 'nav-link' %>
-        </li>
-        <li class="nav-item">
-          <%= link_to "Клиенты", clients_path,class: 'nav-link' %>
-        </li>
-        <li class="nav-item">
-          <%= link_to "Инвентарь", "#",class: 'nav-link' %>
-        </li>
-        <li class="nav-item">
-          <%= link_to "Отчеты", reports_incomes_path,class: 'nav-link' %>
-        </li>
-        <li class="nav-item">
-          <%= link_to "Справочники", directory_path,class: 'nav-link' %>
-        </li>
+        <% if current_user.admin? || current_user.admin_of_branch? %>
+          <li class="nav-item">
+            <%= link_to "Финансы",cashbox_path, class: 'nav-link' %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "Клиенты", clients_path,class: 'nav-link' %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "Инвентарь", "#",class: 'nav-link' %>
+          </li>
+        <% end %>
+        <% if current_user.admin? || current_user.booker? %>
+          <li class="nav-item">
+            <%= link_to "Отчеты", new_report_path,class: 'nav-link' %>
+          </li>
+        <% end %>
+        <% if current_user.admin? %>
+          <li class="nav-item">
+            <%= link_to "Справочники", directory_path,class: 'nav-link' %>
+          </li>
+        <% end %>
       </ul>
     </div>
       <% end %>
   </nav>
     <div class="container-fluid">
+      <% if flash[:error] %>
+        <p class="text-danger"><%= flash[:error] %></p>
+      <% end %>
       <div class="row">
         <% if user_signed_in? %>
         <div class="podl">
 			<p><b>Сегодня:</b> <%= Date.today %></p>
+            <% unless current_user.booker? %>
 			<p><b>Детей:</b> <i id="visited_clients"><%= current_branch.clients.joins(:visited_days).where(:visited_days => {day: Date.today}).size %></i></p>
+            <% end %>
 			<p><b>Новых уведомлений:</b> <i>3</i></p>
             <%= link_to destroy_user_session_path,method: :delete,class: 'nav-link exit' do %>
                 <i class="fas fa-sign-out-alt"></i>Выход
@@ -49,19 +60,21 @@
         <% end %>
         <div class="col-md-3 leftbar">
           <% if user_signed_in? %>
-            <h4 class="text-center"><%= current_branch.title %></h4>
-            <div class="text-center">
-              <p>Всего в кассе: <%= current_cash_box.cash %> грн</p>
-            </div>
-            <div class="text-center">
-              <div class="list-group">
-                <% unless request.path == "/" %>
-                <%= render "layouts/second_menu_#{request.path.split('/')[1]}" %>
-                <% else %>
-                <%= render "layouts/second_menu_clients" %>
-                <% end %>
+            <% unless current_user.booker? %>
+              <h4 class="text-center"><%= current_branch.title %></h4>
+              <div class="text-center">
+                <p>Всего в кассе: <%= current_cash_box.cash %> грн</p>
               </div>
-            </div>
+             <% end %>
+              <div class="text-center">
+                <div class="list-group">
+                  <% unless request.path == "/" %>
+                  <%= render "layouts/second_menu_#{request.path.split('/')[1]}" %>
+                  <% else %>
+                  <%= render "layouts/second_menu_clients" %>
+                  <% end %>
+                </div>
+              </div>
           <% end %>
         </div>
         <div class="col-md-9">

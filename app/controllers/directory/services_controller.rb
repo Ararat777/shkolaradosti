@@ -1,4 +1,4 @@
-class Directory::ServicesController < ApplicationController
+class Directory::ServicesController < DirectoriesController
   before_action :set_branch
   
   def new

@@ -1,7 +1,8 @@
-require "prawn"
 class Income < ApplicationRecord
   belongs_to :cash_box
   after_create :make_income
+  has_many :reports,as: :reportable
+  
   scope :cash_box, -> (cash_box) {where cash_box_id: cash_box}
   scope :client, -> (client) {where client: client}
   scope :service, -> (service) {where service: service}
