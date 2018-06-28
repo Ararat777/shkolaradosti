@@ -9,9 +9,11 @@
     <table class="table">
       <thead>
         <tr>
+          <th scope="col">Филиал</th>
           <th scope="col">Название</th>
           <th scope="col">Количество</th>
-          <th scope="col">Процент</th>
+          <th scope="col">Тип скидки</th>
+          <th scope="col">Скидка</th>
           <th scope="col">Активность</th>
           <th scope="col">Комментарий</th>
           <th scope="col">Действия</th>
@@ -20,9 +22,11 @@
       <tbody>
         <% @discounts.each do |item| %>
         <tr>
+          <td><%= item.branch.title %></td>
           <td><%= item.title %></td>
           <td><%= item.count %></td>
-          <td><%= item.percent %></td>
+          <td><%= item.fixed ? "Фиксированная" : "Процент" %></td>
+          <td><%= item.discount_size %><%= item.fixed ? " грн" : " %" %></td>
           <td><%= item.active ? "Активно" : "Неактивно" %></td>
           <td><%= item.comment %></td>
           <td><%= link_to "Изменить", edit_directory_single_discount_path(item.id) %> | <%= link_to "Удалить", directory_single_discount_path(item.id),method: :delete,data: {confirm: "Действительно удалить?"} %></td>

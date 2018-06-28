@@ -20,7 +20,7 @@
   <tbody>
     <% @paid_services.each do |item| %>
     <tr>
-      <td><%= item.service.title %></td>
+      <td><%= item.title %></td>
       <td><%= item.start_date %></td>
       <td><%= item.end_date %></td>
       <td><%= item.amount %></td>
@@ -54,16 +54,20 @@
       <th>Оплаченные дни</th>
       <th>Осталось дней</th>
       <th>Сумма оплаты</th>
+      <th>Остаток</th>
       <th>Комментарий</th>
+      <th>Действия</th>
     </tr>
   </thead>
   <tbody>
-    <% @foods.each do |item| %>
+    <% if @food %>
     <tr>
-      <td><%= item.paid_days %></td>
-      <td><%= item.count_days %></td>
-      <td><%= item.amount %></td>
-      <td><%= item.comment %></td>
+      <td><%= @food.days_count.count_days %></td>
+      <td><%= @food.days_count.current_count_days %></td>
+      <td><%= @food.amount %></td>
+      <td><%= @food.food_balance %></td>
+      <td><%= @food.comment %></td>
+      <td><%= link_to "Списать остаток",remove_food_balance_client_path(@client.id,@food.id),method: :put %></td>
     </tr>
     <% end %>
   </tbody>

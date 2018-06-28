@@ -12,8 +12,8 @@ class TransfersController < ApplicationController
   end
   
   def create
-    @transfer = Transfer.new(transfer_params)
-    if @transfer.save
+    
+    if @transfer = current_cash_box.make_transfer(transfer_params)
       redirect_to cashbox_path
     else
       render :new

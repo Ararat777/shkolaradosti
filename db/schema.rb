@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180619134212) do
+ActiveRecord::Schema.define(version: 20180626211632) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,7 +47,7 @@ ActiveRecord::Schema.define(version: 20180619134212) do
   end
 
   create_table "consumptions", force: :cascade do |t|
-    t.string "consumption_title"
+    t.string "title"
     t.float "amount"
     t.text "comment"
     t.bigint "cash_box_id"
@@ -56,9 +56,18 @@ ActiveRecord::Schema.define(version: 20180619134212) do
     t.index ["cash_box_id"], name: "index_consumptions_on_cash_box_id"
   end
 
+  create_table "days_counts", force: :cascade do |t|
+    t.integer "count_days"
+    t.integer "current_count_days"
+    t.bigint "paid_service_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["paid_service_id"], name: "index_days_counts_on_paid_service_id"
+  end
+
   create_table "discounts", force: :cascade do |t|
     t.string "title"
-    t.integer "percent"
+    t.integer "discount_size"
     t.boolean "active", default: true
     t.text "comment"
     t.datetime "created_at", null: false
@@ -98,10 +107,10 @@ ActiveRecord::Schema.define(version: 20180619134212) do
 
   create_table "incomes", force: :cascade do |t|
     t.string "acceptor"
-    t.string "income_title"
-    t.integer "service"
+    t.string "title"
+    t.integer "service_id"
     t.float "amount"
-    t.integer "client"
+    t.integer "client_id"
     t.text "comment"
     t.bigint "cash_box_id"
     t.datetime "created_at", null: false
@@ -123,6 +132,7 @@ ActiveRecord::Schema.define(version: 20180619134212) do
     t.date "end_date"
     t.bigint "service_id"
     t.bigint "client_id"
+    t.bigint "single_discount_id"
     t.text "comment"
     t.boolean "status", default: true
     t.float "amount", default: 0.0
@@ -132,6 +142,7 @@ ActiveRecord::Schema.define(version: 20180619134212) do
     t.datetime "updated_at", null: false
     t.index ["client_id"], name: "index_paid_services_on_client_id"
     t.index ["service_id"], name: "index_paid_services_on_service_id"
+    t.index ["single_discount_id"], name: "index_paid_services_on_single_discount_id"
   end
 
   create_table "parents", force: :cascade do |t|
@@ -182,12 +193,15 @@ ActiveRecord::Schema.define(version: 20180619134212) do
 
   create_table "single_discounts", force: :cascade do |t|
     t.string "title"
-    t.integer "percent"
+    t.integer "discount_size"
     t.integer "count"
+    t.boolean "fixed"
     t.boolean "active", default: true
+    t.bigint "branch_id"
     t.text "comment"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["branch_id"], name: "index_single_discounts_on_branch_id"
   end
 
   create_table "transfers", force: :cascade do |t|
@@ -205,7 +219,6 @@ ActiveRecord::Schema.define(version: 20180619134212) do
     t.string "name"
     t.string "phone"
     t.string "adress"
-    t.boolean "admin", default: false
     t.bigint "role_id"
     t.bigint "branch_id"
     t.string "email", default: "", null: false

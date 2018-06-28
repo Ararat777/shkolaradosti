@@ -2,7 +2,7 @@ class CreateDiscounts < ActiveRecord::Migration[5.1]
   def change
     create_table :discounts do |t|
       t.string :title
-      t.integer :percent
+      t.integer :discount_size
       t.boolean :active,default: true
       t.text :comment
 

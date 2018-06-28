@@ -1,0 +1,26 @@
+<table class="table">
+      <thead>
+        <tr>
+          <th>За что</th>
+          <th>Сумма</th>
+          <th>Комментарий</th>
+          <th>Время</th>
+          <th>Действия</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @consumptions.each do |item| %>
+        <tr>
+          <td><%= item.title %></td>
+          <td><%= item.amount %>грн</td>
+          <td><%= item.comment %></td>
+          <td><%= item.created_at.strftime("%F %T") %></td>
+          <td><%= link_to "Просмотреть",consumption_path(item.id) %></td>
+        </tr>
+        <% end %>
+        <tr>
+          <td colspan="1">Сумма расходов:</td>
+          <td colspan="4"><%= @consumptions.sum(:amount) %>грн</td>
+        </tr>
+      </tbody>
+    </table>

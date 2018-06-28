@@ -1,0 +1,40 @@
+<div class="row">
+  <div class="col-md-6 offset-md-2">
+    <h3><%= operation.class.name %> <%= operation.created_at.strftime("%F %T") %></h3>
+    <table class="table table-bordered">
+      <tbody>
+        <% if operation.respond_to?(:acceptor) %>
+        <tr>
+          <th>Получатель</th>
+          <td><%= operation.acceptor %></td>
+        </tr>
+        <% end %>
+        <% if operation.respond_to?(:title) %>
+        <tr>
+          <th>Услуга</th>
+          <td><%= operation.title  %></td>
+        </tr>
+        <% end %>
+        <tr>
+          <th>Сумма</th>
+          <td><%= operation.amount %></td>
+        </tr>
+        <% if operation.respond_to?(:client) %>
+        <tr>
+          <th>Кто оплатил</th>
+          <td><%= operation.client.name %></td>
+        </tr>
+        <% end %>
+        <tr>
+          <th>Комментарий</th>
+          <td><%= operation.comment %></td>
+        </tr>
+        <tr>
+          <th>Дата</th>
+          <td><%= operation.created_at.strftime("%F %T") %></td>
+        </tr>
+      </tbody>
+    </table>
+    <%= link_to "Отчет", get_pdf_report_path(operation.report.id),class: "btn btn-primary",target: "_blank" %>
+  </div>
+</div>

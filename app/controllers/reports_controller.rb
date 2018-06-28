@@ -1,5 +1,5 @@
 class ReportsController < ApplicationController
-  before_action :authenticate_booker_or_admin
+  before_action :authenticate_booker_or_admin,except: [:get_report_pdf]
   include ReportGenerator
   def index
     
@@ -18,6 +18,14 @@ class ReportsController < ApplicationController
     end
   end
   
+  def get_report_pdf
+    report = Report.find(params[:id])
+    respond_to do |format|
+      format.pdf do
+        send_file("#{report.path}/#{report.title}.pdf",disposition: :inline)
+      end
+    end
+  end
   
   private
   

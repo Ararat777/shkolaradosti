@@ -4,7 +4,7 @@ class CreateExceptionalDays < ActiveRecord::Migration[5.1]
       t.string :title
       t.date :day
       t.boolean :is_holiday
-      t.belongs_to :month
+      t.belongs_to :month,index: true
       t.timestamps
     end
   end

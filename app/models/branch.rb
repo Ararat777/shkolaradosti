@@ -3,6 +3,7 @@ class Branch < ApplicationRecord
   has_many :clients
   has_one :cash_box
   has_many :users
+  has_many :single_discounts
   
   def manager
     @manager ||= self.users.find_by(:role_id => Role.find_by(:title => "Администратор").id)

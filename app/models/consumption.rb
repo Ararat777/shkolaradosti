@@ -1,9 +1,9 @@
 class Consumption < ApplicationRecord
+  include Reportable
   belongs_to :cash_box
-  after_create :make_consumption
-  has_many :reports,as: :reportable
+  after_create :exec_consumption
   
-  def make_consumption
+  def exec_consumption
     self.cash_box.decrease_cash_box_amount(self.amount)
   end
 end

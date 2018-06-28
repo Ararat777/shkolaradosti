@@ -22,7 +22,7 @@
         <tr>
           <td><%= item.title %></td>
           <td><%= item.clients.size %></td>
-          <td><%= item.percent %></td>
+          <td><%= item.discount_size %></td>
           <td><%= item.active ? "Активно" : "Неактивно" %></td>
           <td><%= item.comment %></td>
           <td><%= link_to "Просмотреть", directory_discount_path(item.id) %> | <%= link_to "Изменить", edit_directory_discount_path(item.id) %>| <%= link_to "Удалить", directory_discount_path(item.id),method: :delete,data: {confirm: "Действительно удалить?"} %></td>

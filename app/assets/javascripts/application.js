@@ -42,6 +42,11 @@ $(document).ready(function(){
     $('#require-price').val(price);
     $('#amount').attr("max",price);
     $("#paid_service_service_id").val(select.val());
+    if($(this).find("option:selected").text() == "Питание"){
+      $("#select_discount").attr("disabled",true);
+    }else{
+      $("#select_discount").attr("disabled",false);
+    }
   });
   
   $("#new_paid_service").find(".date").on("change",function(){
@@ -49,6 +54,18 @@ $(document).ready(function(){
       $("#start_date").val($(this).val());
     }else{
       $("#end_date").val($(this).val());
+    }
+  })
+  $("#select_discount").on("change",function(){
+    $("#paid_service_single_discount_id").val($(this).find("option:selected").val())
+  })
+  $("#select_client").on("change",function(){
+    if (select.find("option:selected").text() != "Питание"){
+      if($(this).find("option:selected").data("discount") == true){
+        $("#select_discount").attr("disabled",true);
+      }else{
+        $("#select_discount").attr("disabled",false);
+      }
     }
   })
 });

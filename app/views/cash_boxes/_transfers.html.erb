@@ -1,0 +1,45 @@
+<table class="table">
+      <thead>
+        <tr>
+          <th>Откуда</th>
+          <th>Куда</th>
+          <th>Сколько</th>
+          <th>Статус</th>
+          <th>Тип</th>
+          <th>Комментарий</th>
+          <th>Действия</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @transfers.each do |transfer| %>
+        <tr>
+          <td><%= CashBox.find(transfer.from_cashbox).branch.title %></td>
+          <td><%= CashBox.find(transfer.to_cashbox).branch.title %></td>
+          <td><%= transfer.amount %>грн</td>
+          <td><%= transfer.status %></td>
+          <td>
+            <% if transfer.from_cashbox == current_cash_box.id %>
+            Отправка
+            <% else %>
+            Получение
+            <% end %>
+          </td>
+          <td><%= transfer.comment %></td>
+          <td>
+            <%= link_to "Просмотреть", income_path(transfer.id) %>
+            <% if transfer.status == "pending" && current_cash_box.id == transfer.to_cashbox %>
+            |<%= link_to "ПОДТВЕРДИТЬ", confirme_transfer_path(transfer.id), method: :put %>
+            <% end %>
+          </td>
+        </tr>
+        <% end %>
+        <tr>
+          <td colspan="2">Сумма полученных переводов:</td>
+          <td colspan="5"><%= @transfers.where(:to_cashbox => current_cash_box.id).sum(:amount) %>грн</td>
+        </tr>
+        <tr>
+          <td colspan="2">Сумма отправленных переводов:</td>
+          <td colspan="5"><%= @transfers.where(:from_cashbox => current_cash_box.id).sum(:amount) %>грн</td>
+        </tr>
+      </tbody>
+    </table>

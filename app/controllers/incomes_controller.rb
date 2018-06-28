@@ -12,13 +12,12 @@ class IncomesController < ApplicationController
   end
   
   def show
-    
+    @income = Income.find(params[:id])
   end
   
   def create
-    @income = current_cash_box.incomes.new(income_params)
-    if @income.save
-      redirect_to cashbox_path
+    if @income = current_cash_box.make_income(income_params)
+      redirect_to income_path(@income.id)
     else
     end
   end
@@ -37,18 +36,12 @@ class IncomesController < ApplicationController
   private
   
   def filter_query(query)
-    if query[:client]
-      @incomes = @incomes.where(:client => query[:client])
-    end
-    if query[:start_date]
-      @incomes = @incomes.where("created_at >= :start_date", start_date: query[:start_date])
-    end
-    if query[:end_date]
-      @incomes = @incomes.where("created_at <= :end_date", end_date: query[:end_date].to_date.end_of_day.utc)
+    query.each do |k,v|
+      @incomes = @incomes.public_send(k,v)
     end
   end
   
   def income_params
-    params.require(:income).permit(:income_title,:amount,:comment,:client,:acceptor)
+    params.require(:income).permit(:title,:amount,:comment,:client_id,:acceptor)
   end
 end

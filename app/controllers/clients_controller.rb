@@ -1,5 +1,5 @@
 class ClientsController < ApplicationController
-  before_action :set_client, only: [:show,:update,:handle_visit]
+  before_action :set_client, only: [:show,:update,:handle_visit,:remove_food_balance]
   
   def index
     
@@ -17,8 +17,8 @@ class ClientsController < ApplicationController
   
   def show
     @paid_services = @client.paid_services
-    @foods = @client.foods
     @parent = @client.parent
+    @food = @client.food
   end
   
   def new
@@ -39,11 +39,23 @@ class ClientsController < ApplicationController
     
     unless @client.visited_days.find_by(:day => Date.today)
       @client.visited_days.create(:day => Date.today)
+      if food = @client.food
+        food.days_count.current_count_days -= 1
+        food.days_count.save
+      end
     end
     
     respond_to do |format|
       format.js {}
     end
+  end
+  
+  def remove_food_balance
+    food = @client.paid_services.find(params[:service_id])
+    amount = food.remove_food_balance
+    food.update(:status => false)
+    current_cash_box.make_consumption(:title => "Списание баланса питания", :amount => amount, :comment => "Списание #{amount}грн с баланса питания")
+    redirect_to client_path(@client.id)
   end
   
   private

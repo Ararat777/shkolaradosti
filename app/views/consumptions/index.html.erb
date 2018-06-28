@@ -11,27 +11,4 @@
   <%= f.submit "Фильтр",class: "btn ml-3",name: nil %>
 <% end %>
 <h4 class="text-center">Расходы</h4>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>За что</th>
-          <th>Сумма</th>
-          <th>Комментарий</th>
-          <th>Время</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @consumptions.each do |item| %>
-        <tr>
-          <td><%= item.consumption_title %></td>
-          <td><%= item.amount %>грн</td>
-          <td><%= item.comment %></td>
-          <td><%= item.created_at %></td>
-        </tr>
-        <% end %>
-        <tr>
-          <td colspan="1">Сумма расходов:</td>
-          <td colspan="3"><%= @consumptions.sum(:amount) %>грн</td>
-        </tr>
-      </tbody>
-    </table>
+<%= render 'cash_boxes/consumptions' %>

@@ -65,6 +65,6 @@ class Directory::DiscountsController < DirectoriesController
   private
   
   def discount_params
-    params.require(:discount).permit(:title,:percent,:comment,:active)
+    params.require(:discount).permit(:title,:discount_size,:comment,:active)
   end
 end

@@ -12,10 +12,13 @@ class EncashmentsController < ApplicationController
     @encashment = Encashment.new
   end
   
+  def show
+    @encashment = current_cash_box.encashments.find(params[:id])
+  end
+  
   def create
-    @encashment = current_cash_box.encashments.new(encashment_params)
-    if @encashment.save
-      redirect_to cashbox_path
+    if @encashment = current_cash_box.make_encashment(encashment_params)
+      redirect_to encashment_path(@encashment.id)
     else
     end
   end

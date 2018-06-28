@@ -5,7 +5,7 @@ class CreateFoods < ActiveRecord::Migration[5.1]
       t.float :amount, default: 0
       t.integer :count_days, default: 0
       t.string :paid_days, default: "0"
-      t.belongs_to :client
+      t.belongs_to :client,index: true
       t.text :comment
       t.timestamps
     end

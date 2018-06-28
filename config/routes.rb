@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   resources :clients do
     member do
       get "handle_visit"
+      put "remove_food_balance/:service_id",to: "clients#remove_food_balance",as: :remove_food_balance
     end
   end
   get "/cashbox", to: "cash_boxes#show"
@@ -40,7 +41,11 @@ Rails.application.routes.draw do
       end
     end
   end
-  resources :reports, only: [:index,:new]
+  resources :reports, only: [:index,:new] do
+    member do
+      get "get_report.pdf",to: "reports#get_report_pdf",as: :get_pdf
+    end
+  end
   post "/make_report.pdf",to: "reports#make_report",as: :make_report_pdf
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

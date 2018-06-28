@@ -37,6 +37,6 @@ class Directory::SingleDiscountsController < DirectoriesController
   private
   
   def discount_params
-    params.require(:single_discount).permit(:title,:percent,:count,:comment)
+    params.require(:single_discount).permit(:title,:discount_size,:count,:fixed,:branch_id,:comment)
   end
 end

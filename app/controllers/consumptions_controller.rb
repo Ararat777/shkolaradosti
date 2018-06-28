@@ -6,14 +6,17 @@ class ConsumptionsController < ApplicationController
     end
   end
   
+  def show
+    @consumption = current_cash_box.consumptions.find(params[:id])
+  end
+  
   def new
     @consumption = current_cash_box.consumptions.new
   end
   
   def create
-    @consumption = current_cash_box.consumptions.new(consumption_params)
-    if @consumption.save
-      redirect_to cashbox_path
+    if @consumption = current_cash_box.make_consumption(consumption_params)
+      redirect_to consumption_path(@consumption.id)
     else
     end
   end
@@ -33,6 +36,6 @@ class ConsumptionsController < ApplicationController
   end
   
   def consumption_params
-    params.require(:consumption).permit(:consumption_title,:amount,:comment)
+    params.require(:consumption).permit(:title,:amount,:comment)
   end
 end

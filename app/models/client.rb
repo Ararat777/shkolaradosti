@@ -7,6 +7,10 @@ class Client < ApplicationRecord
   has_many :foods
   accepts_nested_attributes_for :parent
   
+  def food
+    self.paid_services.find_by(:service_id => Service.find_by(:title => "Питание").id,:status => true)
+  end
+  
   def has_active_paid_service?(service_id)
     self.paid_services.find_by(:service_id => service_id,:status => true)
   end

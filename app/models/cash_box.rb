@@ -1,11 +1,27 @@
 class CashBox < ApplicationRecord
   belongs_to :branch
-  has_many :incomes,after_add: :make_report_pdf
-  has_many :consumptions,after_add: :make_report_pdf
-  has_many :encashments,after_add: :make_report_pdf
+  has_many :incomes
+  has_many :consumptions
+  has_many :encashments
   
   def transfers
     @transfers ||= Transfer.where(:from_cashbox => self[:id]).or(Transfer.where(:to_cashbox => self[:id]))
+  end
+  
+  def make_income(params)
+    self.incomes.create(params)
+  end
+  
+  def make_consumption(params)
+    self.consumptions.create(params)
+  end
+  
+  def make_encashment(params)
+    self.encashments.create(params)
+  end
+  
+  def make_transfer(params)
+    Transfer.create(params)
   end
   
   def increase_cash_box_amount(amount)
@@ -18,9 +34,4 @@ class CashBox < ApplicationRecord
     self.save
   end
   
-  private
-  
-  def make_report_pdf(operation)
-    operation.reports.create
-  end
 end
