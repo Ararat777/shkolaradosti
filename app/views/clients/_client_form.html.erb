@@ -1,0 +1,92 @@
+<%= form_for client,url: path do |f| %>
+  <div class="row">
+    <div class="col-md-5 offset-md-2">
+      <h2 class="text-center">Оформление клиента</h2>
+      <div class="form-group">
+        <%= f.label "Имя" %>
+        <%= f.text_field :name, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label "Возраст" %>
+        <%= f.text_field :age,class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label "Аллергия" %>
+        <%= f.text_area :allergy,class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label "Комментарий" %>
+        <%= f.text_area :comment,class: "form-control" %>
+      </div>
+      <h3 class="text-center mb-4">Информация о родителях</h3>
+    </div>
+  </div>
+  
+    <%= f.fields_for :parent do |ff| %>
+      <div class="row">
+        <div class="col-md-5">
+            <h5>Данные об Отце</h5>
+          <div class="form-group">
+            <%= ff.label "ФИО" %>
+            <%= ff.text_field :father_name,class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= ff.label "Номер телефона" %>
+            <%= ff.text_field :father_phone,class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= ff.label "Дополнительный номер телефона" %>
+            <%= ff.text_field :father_additional_phone,class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= ff.label "Адрес проживания" %>
+            <%= ff.text_field :father_adress,class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= ff.label "Адрес работы" %>
+            <%= ff.text_field :father_work_adress,class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= ff.label "Дата рождения" %>
+            <%= ff.date_field :father_birthdate,class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= ff.label "Email" %>
+            <%= ff.text_field :father_email,class: "form-control" %>
+          </div>
+        </div>
+        <div class="col-md-5">
+            <h5>Данные о Матери</h5>
+          <div class="form-group">
+            <%= ff.label "ФИО" %>
+            <%= ff.text_field :mother_name,class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= ff.label "Номер телефона" %>
+            <%= ff.text_field :mother_phone,class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= ff.label "Дополнительный номер телефона" %>
+            <%= ff.text_field :mother_additional_phone,class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= ff.label "Адрес проживания" %>
+            <%= ff.text_field :mother_adress,class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= ff.label "Адрес работы" %>
+            <%= ff.text_field :mother_work_adress,class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= ff.label "Дата рождения" %>
+            <%= ff.date_field :mother_birthdate,class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= ff.label "Email" %>
+            <%= ff.text_field :mother_email,class: "form-control" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <%= f.submit "Оформить клиента", class: "btn btn-success" %>
+  <% end %>

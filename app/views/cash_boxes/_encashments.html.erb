@@ -8,7 +8,7 @@
         </tr>
       </thead>
       <tbody>
-        <% @encashments.each do |item| %>
+        <% @encashments.take(5).each do |item| %>
         <tr>
           <td><%= item.amount %>грн</td>
           <td><%= item.comment %></td>

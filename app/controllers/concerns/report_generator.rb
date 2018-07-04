@@ -15,9 +15,8 @@ module ReportGenerator
       collection.each do |item|
         arr = []
         arr << item.acceptor if item.respond_to?(:acceptor)
-        arr << Client.find(item.client).name if item.respond_to?(:client)
-        arr << (item.service ? Service.find(item.service).title : item.income_title) if item.respond_to?(:service)
-        arr << item.consumption_title if item.respond_to?(:consumption_title)
+        arr << item.client.name if item.respond_to?(:client)
+        arr << item.title if item.respond_to?(:title)
         arr << item.amount.to_s
         arr << item.created_at.strftime("%F %T").to_s
         arr << item.comment.to_s

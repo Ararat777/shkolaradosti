@@ -61,13 +61,35 @@ $(document).ready(function(){
   })
   $("#select_client").on("change",function(){
     if (select.find("option:selected").text() != "Питание"){
+      
       if($(this).find("option:selected").data("discount") == true){
         $("#select_discount").attr("disabled",true);
+        $("#paid_service_client_id").val($(this).find("option:selected").val())
       }else{
         $("#select_discount").attr("disabled",false);
+        $("#paid_service_client_id").val("");
       }
     }
   })
+  
+  $("#client_list li").on("click",function(){
+    $("#client_name").val($(this).text());
+    $("#paid_service_client_id").val($(this).data("id"));
+    $("#client_list").hide();
+  })
+  
+  
 });
+
+function findClient(elem,path){
+    $.ajax({
+      type: 'GET',
+      url: path,
+      data: {client_name: $(elem).val()},
+      dataType: 'script'
+    })
+}
+
+
 
   

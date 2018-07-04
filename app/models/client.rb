@@ -7,6 +7,7 @@ class Client < ApplicationRecord
   has_many :foods
   accepts_nested_attributes_for :parent
   
+  scope :find_client, -> (name) {where("name LIKE '%#{name.mb_chars.capitalize.to_s}%'")}
   def food
     self.paid_services.find_by(:service_id => Service.find_by(:title => "Питание").id,:status => true)
   end

@@ -1,0 +1,9 @@
+<ul>
+    <% clients.each do |item| %>
+    <li data-id="<%= item.id %>" data-discount="<%= item.discount ? 'true' : 'false'%>"><%= item.name %>
+      <% if item.discount %>
+      <span class="text-success"><%= item.discount.title %></span>
+      <% end %>
+    </li>
+    <% end %>
+</ul>

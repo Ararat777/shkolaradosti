@@ -40,7 +40,7 @@ class Directory::DiscountsController < DirectoriesController
   
   def find_clients
     @discount = Discount.find(params[:id])
-    @clients = Client.where("name LIKE ?", "%#{params[:q][:name]}%")
+    @clients = Client.find_client(params[:q][:name])
     respond_to do |format|
       format.js {}
     end

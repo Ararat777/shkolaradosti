@@ -13,4 +13,12 @@ class Transfer < ApplicationRecord
     end
     self.confirmed!
   end
+  
+  def sender
+    Branch.find(self.from_cashbox)
+  end
+  
+  def acceptor
+    Branch.find(self.to_cashbox)
+  end
 end

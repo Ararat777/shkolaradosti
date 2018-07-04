@@ -24,6 +24,9 @@ Rails.application.routes.draw do
       get "handle_visit"
       put "remove_food_balance/:service_id",to: "clients#remove_food_balance",as: :remove_food_balance
     end
+    collection do
+      get "find_client"
+    end
   end
   get "/cashbox", to: "cash_boxes#show"
   scope '/cashbox' do

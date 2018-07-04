@@ -220,6 +220,26 @@ input[type="submit"]:hover, input[type="submit"]:active, input[type="submit"]:fo
 	font-weight: normal;
 }
 
+#client_name{
+  border-radius: 0;
+}
+#client_list{
+  border: 1px solid #78d23c;
+  border-top-width: 0;
+  display: none;
+  ul{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    li{
+      padding: 0 10px;
+      &:hover{
+        background-color: darkgrey;
+      }
+    }
+  }
+}
+
 table {
 	
 }

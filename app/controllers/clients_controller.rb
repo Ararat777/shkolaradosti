@@ -22,8 +22,13 @@ class ClientsController < ApplicationController
   end
   
   def new
-    @parent = Parent.new
     @client = Client.new
+    @client.build_parent
+  end
+  
+  def edit
+    @client = Client.find(params[:id])
+    
   end
   
   def create
@@ -32,6 +37,15 @@ class ClientsController < ApplicationController
       redirect_to client_path(@client.id)
     else
       render :new
+    end
+  end
+  
+  def update
+    @client = Client.find(params[:id])
+    if @client.update(client_params)
+      redirect_to client_path(@client.id)
+    else
+      render :edit
     end
   end
   
@@ -56,6 +70,13 @@ class ClientsController < ApplicationController
     food.update(:status => false)
     current_cash_box.make_consumption(:title => "Списание баланса питания", :amount => amount, :comment => "Списание #{amount}грн с баланса питания")
     redirect_to client_path(@client.id)
+  end
+  
+  def find_client
+    @clients = Client.find_client(params[:client_name])
+    respond_to do |format|
+      format.js
+    end
   end
   
   private

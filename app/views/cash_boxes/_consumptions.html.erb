@@ -9,7 +9,7 @@
         </tr>
       </thead>
       <tbody>
-        <% @consumptions.each do |item| %>
+        <% @consumptions.take(5).each do |item| %>
         <tr>
           <td><%= item.title %></td>
           <td><%= item.amount %>грн</td>

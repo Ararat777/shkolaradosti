@@ -18,10 +18,6 @@ User.delete_all
 branch.users.create(:email => "admin@admin.com", :password => "123456")
 branch_2.users.create(:email => "vasya@admin.com", :password => "123456")
 
-Client.delete_all
-branch.clients.create(:name => "Иван Иванов", :age => 4)
-branch.clients.create(:name => "Петр Петров", :age => 5)
-branch.clients.create(:name => "Маша Машкина", :age => 3)
 
 Service.delete_all
 branch.services.create(:title => "Детский сад", :price => 1000)

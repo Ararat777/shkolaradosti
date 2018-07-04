@@ -1,0 +1,13 @@
+$("#client_list").html("<%= j(render 'client_list',clients: @clients) %>").show();
+$("#client_list li").on("click",function(){
+  $("#client_name").val($(this).text());
+  $("#paid_service_client_id").val($(this).data("id"));
+  if($(this).data("discount") == true){
+    $("#select_discount").attr("disabled",true);
+    $("#discount_client_id").val($(this).data("id"));
+  }else{
+    $("#select_discount").attr("disabled",false);
+    $("#discount_client_id").val($(this).data(""));
+  }
+  $("#client_list").hide();
+});

@@ -11,7 +11,7 @@
         </tr>
       </thead>
       <tbody>
-        <% @transfers.each do |transfer| %>
+        <% @transfers.take(5).each do |transfer| %>
         <tr>
           <td><%= CashBox.find(transfer.from_cashbox).branch.title %></td>
           <td><%= CashBox.find(transfer.to_cashbox).branch.title %></td>
