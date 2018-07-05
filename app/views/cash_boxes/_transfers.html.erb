@@ -13,8 +13,8 @@
       <tbody>
         <% @transfers.take(5).each do |transfer| %>
         <tr>
-          <td><%= CashBox.find(transfer.from_cashbox).branch.title %></td>
-          <td><%= CashBox.find(transfer.to_cashbox).branch.title %></td>
+          <td><%= transfer.branch_sender.title %></td>
+          <td><%= transfer.branch_acceptor.title %></td>
           <td><%= transfer.amount %>грн</td>
           <td><%= transfer.status %></td>
           <td>
@@ -26,7 +26,7 @@
           </td>
           <td><%= transfer.comment %></td>
           <td>
-            <%= link_to "Просмотреть", income_path(transfer.id) %>
+            <%= link_to "Просмотреть", transfer_path(transfer.id) %>
             <% if transfer.status == "pending" && current_cash_box.id == transfer.to_cashbox %>
             |<%= link_to "ПОДТВЕРДИТЬ", confirme_transfer_path(transfer.id), method: :put %>
             <% end %>

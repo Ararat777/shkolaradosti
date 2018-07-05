@@ -11,6 +11,10 @@ class TransfersController < ApplicationController
     @transfer = Transfer.new
   end
   
+  def show
+    @transfer = Transfer.find(params[:id])
+  end
+  
   def create
     
     if @transfer = current_cash_box.make_transfer(transfer_params)

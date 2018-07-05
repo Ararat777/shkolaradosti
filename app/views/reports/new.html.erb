@@ -3,7 +3,7 @@
     <%= form_for :make_report,url: make_report_pdf_path ,html:{class: "filter-form",id: "pdf-form"} do |f| %>
       <div class="form-group">
         <%= f.label "Название операции" %>
-        <%= f.select :operation, [["Приходы","income"],["Расходы","consumption"]],{},{class: 'custom-select'} %>
+        <%= f.select :operation, [["Приходы","income"],["Расходы","consumption"],["Переводы","transfer"],["Инкасации","encashment"]],{},{class: 'custom-select'} %>
       </div>
       <div class="form-group">
         <%= f.label "Филиал" %>

@@ -3,7 +3,7 @@ module ReportGenerator
   
   class ReportPDF < Prawn::Document
     
-    def make_report(collection)
+    def generate_report(collection)
       font "#{Rails.root}/app/assets/fonts/TimesNewRomanRegular.ttf"
       operation = collection.class.to_s.split("::").first
       if operation == "Income"

@@ -1,6 +1,5 @@
 class ReportsController < ApplicationController
   before_action :authenticate_booker_or_admin,except: [:get_report_pdf]
-  include ReportGenerator
   def index
     
   end
@@ -13,7 +12,7 @@ class ReportsController < ApplicationController
     filter_query(report_params)
     respond_to do |format|
       format.pdf do
-        make_report_pdf(@collection)
+        send_data Report.new.generate_report_pdf(@collection)
       end
     end
   end
@@ -28,11 +27,6 @@ class ReportsController < ApplicationController
   end
   
   private
-  
-  def make_report_pdf(collection)
-    report = ReportPDF.new
-    send_data report.make_report(collection),disposition: 'inline'
-  end
   
   def filter_query(query)
     query.slice(:cash_box,:client,:service,:start_date,:end_date).each do |k,v|
