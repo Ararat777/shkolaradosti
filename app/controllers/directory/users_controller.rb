@@ -34,6 +34,11 @@ class Directory::UsersController < DirectoriesController
     redirect_to directory_users_path
   end
   
+  def change_branch
+    current_user.update(params.require(:change_branch).permit(:branch_id))
+    redirect_to root_url
+  end
+  
   private
   
   def user_params

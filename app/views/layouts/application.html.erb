@@ -9,37 +9,42 @@
   </head>
   <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">ShkolaRadosti</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
     <% if user_signed_in? %>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <% if current_user.admin? || current_user.admin_of_branch? %>
-          <li class="nav-item">
-            <%= link_to "Финансы",cashbox_path, class: 'nav-link' %>
-          </li>
-          <li class="nav-item">
-            <%= link_to "Клиенты", clients_path,class: 'nav-link' %>
-          </li>
-          <li class="nav-item">
-            <%= link_to "Инвентарь", "#",class: 'nav-link' %>
-          </li>
-        <% end %>
-        <% if current_user.admin? || current_user.booker? %>
-          <li class="nav-item">
-            <%= link_to "Отчеты", new_report_path,class: 'nav-link' %>
-          </li>
-        <% end %>
-        <% if current_user.admin? %>
-          <li class="nav-item">
-            <%= link_to "Справочники", directory_path,class: 'nav-link' %>
-          </li>
-        <% end %>
-      </ul>
-    </div>
+      <% if current_user.admin? %>
+        <div id="admin-branch-select">
+          <%= render 'layouts/admin_branch_select' %>
+        </div>
       <% end %>
+      <a class="navbar-brand" href="#">ShkolaRadosti</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <% if current_user.admin? || current_user.admin_of_branch? %>
+            <li class="nav-item">
+              <%= link_to "Финансы",cashbox_path, class: 'nav-link' %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Клиенты", clients_path,class: 'nav-link' %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Инвентарь", "#",class: 'nav-link' %>
+            </li>
+          <% end %>
+          <% if current_user.admin? || current_user.booker? %>
+            <li class="nav-item">
+              <%= link_to "Отчеты", new_report_path,class: 'nav-link' %>
+            </li>
+          <% end %>
+          <% if current_user.admin? %>
+            <li class="nav-item">
+              <%= link_to "Справочники", directory_path,class: 'nav-link' %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
   </nav>
     <div class="container-fluid">
       <% if flash[:error] %>

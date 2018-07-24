@@ -18,7 +18,7 @@ module Reportable
             report.path = "#{Rails.root}/app/reports#{if self.respond_to?(:cash_box) then '/' + self.cash_box.branch.title end}/#{self.class.name}/#{self.created_at.year}/#{self.created_at.strftime('%B')}"
 
             FileUtils.mkdir_p(report.path)
-            ReportPDF.new.make_report(self,"#{report.path}/#{report.title}.pdf")
+            ReportPDF.new(:page_size => [570,2000]).make_report(self,"#{report.path}/#{report.title}.pdf")
             report.save
           end
         end
@@ -26,6 +26,10 @@ module Reportable
     end
   
   class ReportPDF < Prawn::Document
+    
+    def initialize(options = {:page_size => "A4"})
+      super(options)
+    end
     
     def make_report(operation,path)
       font "#{Rails.root}/app/assets/fonts/TimesNewRomanRegular.ttf"
@@ -51,7 +55,7 @@ module Reportable
     
     def generate_report(collection)
       font "#{Rails.root}/app/assets/fonts/TimesNewRomanRegular.ttf"
-      operation = collection.class.to_s.split("::").first
+      operation = collection.klass.name
       data = [get_operation_header(operation)]
       collection.each do |item|
         arr = []

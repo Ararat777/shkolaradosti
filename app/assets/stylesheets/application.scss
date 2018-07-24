@@ -240,6 +240,15 @@ input[type="submit"]:hover, input[type="submit"]:active, input[type="submit"]:fo
   }
 }
 
+#admin-branch-select{
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  .change_branch{
+    padding: 5px;
+  }
+}
+
 table {
 	
 }

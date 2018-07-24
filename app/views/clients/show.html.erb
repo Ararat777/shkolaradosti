@@ -36,17 +36,24 @@
         <i class="text-success">Оплачено</i>
         <% elsif item.amount == 0 %>
         <i class="text-danger">Неоплачено</i>
-        <%= link_to "Оформить доплату", edit_paid_service_path(@client.id,item.id),class: "btn btn-primary" %>
+        <%= link_to "Оформить доплату", surcharge_paid_service_path(item.id),class: "btn btn-primary" %>
         <% else %>
         <i class="text-warning">Неполная оплата(Недостаточно <%= item.lack %>грн)</i>
-        <%= link_to "Доплатить", edit_paid_service_path(item.id),class: "btn btn-primary" %>
+        <%= link_to "Доплатить", surcharge_paid_service_path(item.id),class: "btn btn-primary" %>
         <% end %>
       </td>
+      <% if current_user.admin? %>
+      <td>
+        <%= link_to "Удалить",paid_service_path(item.id),method: :delete %>
+      </td>
+      <% end %>
     </tr>
     <% end %>
   </tbody>
 </table>
-<h3>Питание</h3>
+
+<% @paid_services.countable.each do |item| %>
+<h3><%= item.title %></h3>
 <table class="table">
   <thead>
     <tr>
@@ -59,18 +66,18 @@
     </tr>
   </thead>
   <tbody>
-    <% if @food %>
+    
     <tr>
-      <td><%= @food.days_count.count_days %></td>
-      <td><%= @food.days_count.current_count_days %></td>
-      <td><%= @food.amount %></td>
-      <td><%= @food.food_balance %></td>
-      <td><%= @food.comment %></td>
-      <td><%= link_to "Списать остаток",remove_food_balance_client_path(@client.id,@food.id),method: :put %></td>
+      <td><%= item.days_count.count_days %></td>
+      <td><%= item.days_count.current_count_days %></td>
+      <td><%= item.amount %></td>
+      <td><%= item.countable_balance %></td>
+      <td><%= item.comment %></td>
+      <td><%= link_to "Списать остаток",remove_countable_service_balance_client_path(@client.id,item.id),method: :put %></td>
     </tr>
-    <% end %>
   </tbody>
 </table>
+<% end %>
 <h3>Информация о родителях</h3>
 <table class="table-bordered mb-5">
   <tbody>

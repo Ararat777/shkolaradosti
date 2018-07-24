@@ -72,11 +72,6 @@ $(document).ready(function(){
     }
   })
   
-  $("#client_list li").on("click",function(){
-    $("#client_name").val($(this).text());
-    $("#paid_service_client_id").val($(this).data("id"));
-    $("#client_list").hide();
-  })
   
   
 });

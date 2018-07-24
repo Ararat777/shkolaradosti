@@ -8,30 +8,25 @@ class CashBox < ApplicationRecord
     @transfers ||= Transfer.where(:from_cashbox => self[:id]).or(Transfer.where(:to_cashbox => self[:id]))
   end
   
-  def make_income(params)
-    self.incomes.create(params)
-  end
-  
-  def make_consumption(params)
-    self.consumptions.create(params)
-  end
-  
-  def make_encashment(params)
-    self.encashments.create(params)
+  def exec_operation(operation,params)
+    self.send(operation).create(params)
   end
   
   def make_transfer(params)
     Transfer.create(params)
   end
   
-  def increase_cash_box_amount(amount)
-    self.cash += amount
+  
+  def calculate_cash
+    self.cash = sum_operations("incomes") - sum_operations("consumptions") - sum_operations("encashments") + sum_operations("transfers")
     self.save
   end
   
-  def decrease_cash_box_amount(amount)
-    self.cash -= amount
-    self.save
+  def sum_operations(operations)
+    if operations != "transfers"
+      self.send(operations).exist.sum(:amount)
+    else
+     Transfer.where(:to_cashbox => self[:id],:status => "confirmed").sum(:amount) - Transfer.where(:from_cashbox => self[:id],:status => "confirmed").sum(:amount)
+    end
   end
-  
 end

@@ -1,0 +1,4 @@
+<%= form_for :change_branch,url: change_branch_path,method: :put do |f| %>
+  <%= f.select :branch_id,options_for_select(Branch.all.collect{|b| [b.title, b.id]},current_branch.id) %>
+  <%= f.submit "Перейти",class: "change_branch" %>
+<% end %>

@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 20180626211632) do
     t.bigint "branch_id"
     t.bigint "discount_id"
     t.bigint "parent_id"
+    t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["branch_id"], name: "index_clients_on_branch_id"
@@ -51,6 +52,7 @@ ActiveRecord::Schema.define(version: 20180626211632) do
     t.float "amount"
     t.text "comment"
     t.bigint "cash_box_id"
+    t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["cash_box_id"], name: "index_consumptions_on_cash_box_id"
@@ -78,6 +80,7 @@ ActiveRecord::Schema.define(version: 20180626211632) do
     t.float "amount"
     t.text "comment"
     t.bigint "cash_box_id"
+    t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["cash_box_id"], name: "index_encashments_on_cash_box_id"
@@ -108,14 +111,17 @@ ActiveRecord::Schema.define(version: 20180626211632) do
   create_table "incomes", force: :cascade do |t|
     t.string "acceptor"
     t.string "title"
-    t.integer "service_id"
     t.float "amount"
-    t.integer "client_id"
     t.text "comment"
+    t.integer "client_id"
+    t.integer "service_id"
     t.bigint "cash_box_id"
+    t.bigint "paid_service_id"
+    t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["cash_box_id"], name: "index_incomes_on_cash_box_id"
+    t.index ["paid_service_id"], name: "index_incomes_on_paid_service_id"
   end
 
   create_table "months", force: :cascade do |t|
@@ -135,7 +141,6 @@ ActiveRecord::Schema.define(version: 20180626211632) do
     t.bigint "single_discount_id"
     t.text "comment"
     t.boolean "status", default: true
-    t.float "amount", default: 0.0
     t.float "required_amount"
     t.float "lack", default: 0.0
     t.datetime "created_at", null: false
@@ -183,6 +188,7 @@ ActiveRecord::Schema.define(version: 20180626211632) do
   create_table "services", force: :cascade do |t|
     t.string "title"
     t.float "price"
+    t.boolean "countable", default: false
     t.boolean "active", default: true
     t.bigint "branch_id"
     t.text "comment"
@@ -211,6 +217,7 @@ ActiveRecord::Schema.define(version: 20180626211632) do
     t.integer "status", default: 0
     t.integer "kind", default: 0
     t.text "comment"
+    t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

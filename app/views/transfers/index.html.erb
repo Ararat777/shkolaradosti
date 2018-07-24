@@ -1,14 +1,13 @@
-<h3>Фильтр</h3>
-<%= form_for :q,url: transfers_path,html: {class: "form-inline filter-form"},enforce_utf8: false,method: :get do |f| %>
-  <div class="input-group mr-3">
-    <%= f.label "C" %>
-    <%= f.date_field :start_date, class: "form-control" %>
-  </div>
-  <div class="input-group">
-    <%= f.label "По" %>
-    <%= f.date_field :end_date, class: "form-control" %>
-  </div>
-  <%= f.submit "Фильтр",class: "btn ml-3",name: nil %>
-<% end %>
+<%= render 'cash_boxes/collection_filter',collection: @collection %>
 <h4 class="text-center">Переводы</h4>
-    <%= render 'cash_boxes/transfers' %>
+<table class="table">
+  <thead>
+    <tr>
+      <%= render 'cash_boxes/table_headers',collection: @collection %>
+    </tr>
+  </thead>
+  <tbody>
+      <%= render 'cash_boxes/collection',collection: @collection %>
+  </tbody>
+</table>
+    

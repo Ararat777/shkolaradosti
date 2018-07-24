@@ -1,0 +1,44 @@
+<% collection.each do |operation| %>
+  <tr class="<%= operation_status(operation) %>">
+    <% if operation.respond_to?(:branch_sender) %>
+    <td><%= operation.branch_sender.title  %></td>
+    <% end %>
+
+    <% if operation.respond_to?(:branch_acceptor) %>
+    <td><%= operation.branch_acceptor.title  %></td>
+    <% end %>
+
+    <% if operation.respond_to?(:acceptor) %>
+    <td><%= operation.acceptor  %></td>
+    <% end %>
+
+    <% if operation.respond_to?(:client) %>
+    <td><%= operation.client.name  %></td>
+    <% end %>
+
+    <% if operation.respond_to?(:title) %>
+    <td><%= operation.title  %></td>
+    <% end %>
+
+    <td><%= operation.amount %>грн</td>
+
+    <% if operation.respond_to?(:status) %>
+    <td><%= operation.status  %></td> 
+    <% end %>
+
+    <td><%= operation.created_at.strftime("%F %T") %></td>
+    <td><%= operation.comment %></td>
+    <td>
+      <%= link_to "Просмотреть", operation_path(operation) %>
+      <% if operation.respond_to?(:canceled?) %>
+        <% if current_user.admin? && !operation.canceled? %>
+        | <%= link_to "Отменить",operation_path(operation),method: :delete %>
+        <% end %>
+      <% else %>
+        <% if operation.status == "pending" && operation.to_cashbox == current_cash_box.id %>
+        | <%= link_to "ПОДТВЕРДИТЬ",confirme_transfer_path(operation.id),method: :put %>
+        <% end %>
+      <% end %>
+    <td>
+  </tr>
+<% end %>

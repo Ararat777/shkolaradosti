@@ -1,0 +1,3 @@
+<% t("operations.#{collection.respond_to?(:klass) ? collection.klass.name : collection}.table_titles").each do |item| %>
+<th><%= item %></th>
+<% end %>

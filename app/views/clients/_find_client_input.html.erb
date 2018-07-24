@@ -1,0 +1,6 @@
+<div class="form-group search_client">
+  <%= f.label "Для кого" %>
+  <%= text_field_tag "client_name",nil,class: "form-control", autocomplete: "off",onchange: "findClient(this,'#{find_client_clients_path}');" %>
+  <%= f.hidden_field :client_id,id: "find_client_id" %>
+  <div id="client_list"></div>
+</div>

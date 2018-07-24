@@ -28,7 +28,7 @@ class Directory::ServicesController < DirectoriesController
   private
   
   def service_params
-    params.require(:service).permit(:title,:price,:active,:comment)
+    params.require(:service).permit(:title,:price,:active,:countable,:comment)
   end
   
   def set_branch

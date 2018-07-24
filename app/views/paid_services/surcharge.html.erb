@@ -1,0 +1,20 @@
+<h3>Доплата за услугу <%= @paid_service.title %></h3>
+<%= form_for @income,url: incomes_path do |f| %>
+<%= f.hidden_field :paid_service_id, value: @paid_service.id %>
+<div class="form-group">
+  <%= f.label "Требуемая сумма" %>
+  <%= f.text_field :required_amount, value: @paid_service.required_amount,class: "form-control", disabled: "disabled" %>
+</div>
+<% if @paid_service.lack > 0 %>
+<i class="text-warning">Недостаточно <%= @paid_service.lack %>грн</i>
+<% end %>
+<div class="form-group">
+  <%= f.label "Сумма" %>
+  <%= f.number_field :amount,class: "form-control",min: 1,max: @paid_service.lack,value: @paid_service.lack  %>
+</div>
+<div class="form-group">
+  <%= f.label "Комментарий" %>
+  <%= f.text_area :comment,class: "form-control",value: "Доплата за услугу #{@paid_service.title}"  %>
+</div>
+<%= f.submit "Оформить доплату", class: "btn btn-success" %>
+<% end %>

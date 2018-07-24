@@ -1,9 +1,22 @@
 <h2 class="text-center">Касса</h2>
-<h4 class="text-center text-success">Приходы</h4>
-<%= render 'incomes' %><br>
-<h4 class="text-center">Переводы</h4>
-<%= render 'transfers' %><br>
-<h4 class="text-center">Расходы</h4>
-<%= render 'consumptions' %>
-<h4 class="text-center">Инкасации</h4>
-<%= render 'encashments' %>
+<% ["Incomes","Consumptions","Encashments","Transfers"].each do |item| %>
+<h4 class="text-center text-success"><%= t("operations.#{item}.rus")%></h4>
+  <table class="table">
+    <thead>
+      <tr>
+        <%= render 'table_headers',collection: item.chop %>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render 'collection',collection: current_cash_box.send(item.downcase).order("created_at DESC").take(5) %>
+    </tbody>
+  </table>
+<% end %>
+
+
+
+
+
+
+
+

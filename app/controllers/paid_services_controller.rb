@@ -1,42 +1,31 @@
 class PaidServicesController < ApplicationController
   
-  before_action :set_paid_service, only: [:update,:edit]
+  before_action :set_paid_service, only: [:update,:edit,:surcharge,:destroy]
   def index
     @paid_services = @client.paid_services
   end
   
   def new
-    @paid_service = PaidService.new                  
+    @paid_service = PaidService.new
+    @paid_service.incomes.build
   end
   
   def create
     @client = Client.find(paid_service_params[:client_id])
     if @paid_service = @client.has_active_paid_service?(paid_service_params[:service_id])
       
-      if @paid_service.update(:end_date => paid_service_params[:end_date], :required_amount => @paid_service.required_amount + paid_service_params[:required_amount].to_f, :amount => @paid_service.amount + paid_service_params[:amount].to_f)
-        
-        if paid_service_params[:amount].to_i > 0
-          @income = current_cash_box.make_income(income_params)
-          redirect_to income_path(@income.id)
-        else
-          redirect_to cashbox_path
-        end
-        
+      if @paid_service.update(:end_date => paid_service_params[:end_date], :required_amount => @paid_service.required_amount + paid_service_params[:required_amount].to_f)
+        @income = @paid_service.incomes.create(paid_service_params[:incomes_attributes]["0"])
+        redirect_to income_path(@income.id)
       else
         render :new
       end
     else
       @paid_service = PaidService.new(paid_service_params)
       if @paid_service.save
-        if @paid_service.amount > 0
-          @income = current_cash_box.make_income(income_params)
-          redirect_to income_path(@income.id)
-        else
-          redirect_to cashbox_path
-        end
-        
+          redirect_to income_path(@paid_service.incomes.last.id)
       else
-        render :new
+          render :new
       end
     end
   end
@@ -46,25 +35,27 @@ class PaidServicesController < ApplicationController
   end
   
   def update
-    if @paid_service.update(:amount => (@paid_service.amount + paid_service_params[:amount].to_f))
-      if @paid_service.amount > 0
-        @income = current_cash_box.make_income(:service_id => @paid_service.service.id, :client_id => @paid_service.client.id, :amount => paid_service_params[:amount], :comment => "Доплата за услугу #{@paid_service.service.title}")
-      end
-      redirect_to income_path(@income.id)
+    @paid_service.incomes.build
+    if @paid_service.update(paid_service_params)
+      redirect_to income_path(@paid_service.incomes.last.id)
     else
       render :edit
     end
   end
   
+  def destroy
+    @paid_service.destroy
+    redirect_to client_path(@paid_service.client.id)
+  end
+  
+  
+  def surcharge
+    @income = @paid_service.incomes.new
+  end
+  
   def calculate_required_amount
     @paid_service = PaidService.new
-    @paid_service.calculate_required_amount(
-      paid_service_params[:service_id],
-      paid_service_params[:start_date].to_date,
-      paid_service_params[:end_date].to_date,
-      paid_service_params[:single_discount_id],
-      paid_service_params[:client_id]
-      )
+    @paid_service.calculate_required_amount(calculating_params)
     respond_to do |format|
       format.js
     end
@@ -73,17 +64,13 @@ class PaidServicesController < ApplicationController
   private
   
   def paid_service_params
-    params.require(:paid_service).permit(:service_id,:start_date,:end_date,:amount,:comment,:required_amount,:client_id,:single_discount_id)
+    merged_params = params.require(:paid_service).permit(:service_id,:start_date,:end_date,:amount,:comment,:required_amount,:client_id,:single_discount_id,:incomes_attributes => [:amount])
+    merged_params[:incomes_attributes]["0"].merge!(cash_box_id: current_cash_box.id)
+    merged_params
   end
   
-  def income_params
-    {
-      :acceptor => current_branch.title,
-      :service_id => paid_service_params[:service_id],
-      :client_id => paid_service_params[:client_id],
-      :amount => paid_service_params[:amount],
-      :comment => "Оформление услуги"
-      }
+  def calculating_params
+    params.require(:paid_service).permit(:service_id,:start_date,:end_date,:single_discount_id,:client_id)
   end
   
   def set_paid_service

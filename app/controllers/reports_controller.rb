@@ -30,7 +30,7 @@ class ReportsController < ApplicationController
   
   def filter_query(query)
     query.slice(:cash_box,:client,:service,:start_date,:end_date).each do |k,v|
-      @collection = @collection.public_send(k,v)
+      @collection = @collection.public_send("#{k}_filter",v)
     end
   end
   

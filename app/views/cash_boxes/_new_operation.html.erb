@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col-md-5 offset-md-2">
+    <%= form_for @operation,url: operation_path do |f| %>
+    
+    <% if @operation.respond_to?(:acceptor) %>
+      <div class="form-group">
+        <%= f.label "Кто принимает" %>
+        <%= f.text_field :acceptor, class: "form-control",value: current_branch.title %>
+      </div>
+    <% end %>
+  
+    <% if @operation.respond_to?(:title) %>
+    <div class="form-group">
+      <%= f.label "За что" %>
+      <%= f.text_field :title, class: "form-control" %>
+    </div>
+    <% end %>
+    <% if @operation.respond_to?(:client) %>
+    <%= render "clients/find_client_input",f: f %>
+    <% end %>
+    
+    <div class="form-group">
+      <%= f.label "Cумма" %>
+      <%= f.number_field :amount,class: "form-control",min: 0,step: "0.01" %>
+    </div>
+    
+    <div class="form-group">
+      <%= f.label "Комментарий" %>
+      <%= f.text_area :comment,class: "form-control" %>
+    </div>
+    <%= f.submit "Оформить приход", class: "btn btn-success form-control" %>
+    <% end %>
+  </div>
+</div>
+

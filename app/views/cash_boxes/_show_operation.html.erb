@@ -58,6 +58,12 @@
           <th>Дата</th>
           <td><%= operation.created_at.strftime("%F %T") %></td>
         </tr>
+        <% if operation.respond_to?(:canceled?) %>
+          <% if operation.canceled? %>
+            <th>Статус</th>
+            <td><b class="text-danger">Отменено!</b></td>
+          <% end %>
+        <% end %>
       </tbody>
     </table>
     <%= link_to "Чек", get_pdf_report_path(operation.report.id),class: "btn btn-primary",target: "_blank" %>
