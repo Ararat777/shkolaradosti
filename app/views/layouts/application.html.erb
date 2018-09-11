@@ -29,7 +29,7 @@
               <%= link_to "Клиенты", clients_path,class: 'nav-link' %>
             </li>
             <li class="nav-item">
-              <%= link_to "Инвентарь", "#",class: 'nav-link' %>
+              <%= link_to "Инвентарь", inventory_categories_path,class: 'nav-link' %>
             </li>
           <% end %>
           <% if current_user.admin? || current_user.booker? %>
@@ -47,6 +47,9 @@
     <% end %>
   </nav>
     <div class="container-fluid">
+      <% if flash[:notice] %>
+        <p class="text-primary"><%= flash[:notice] %></p>
+      <% end %>
       <% if flash[:error] %>
         <p class="text-danger"><%= flash[:error] %></p>
       <% end %>

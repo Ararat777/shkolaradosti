@@ -46,7 +46,11 @@
         <% if operation.respond_to?(:client) %>
         <tr>
           <th>Кто оплатил</th>
-          <td><%= operation.client.name %></td>
+          <td>
+            <% if operation.client %>
+              <%= operation.client.name %>
+            <% end %>
+          </td>
         </tr>
         <% end %>
         
@@ -58,12 +62,6 @@
           <th>Дата</th>
           <td><%= operation.created_at.strftime("%F %T") %></td>
         </tr>
-        <% if operation.respond_to?(:canceled?) %>
-          <% if operation.canceled? %>
-            <th>Статус</th>
-            <td><b class="text-danger">Отменено!</b></td>
-          <% end %>
-        <% end %>
       </tbody>
     </table>
     <%= link_to "Чек", get_pdf_report_path(operation.report.id),class: "btn btn-primary",target: "_blank" %>

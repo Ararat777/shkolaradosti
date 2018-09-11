@@ -25,10 +25,14 @@
       <td><%= item.amount %></td>
       <td><%= item.required_amount %></td>
       <td>
-        <% if item.check_status %>
-        <i class="text-success">Активно</i>
+        <% if item.canceled? %>
+          <i class="text-danger">Отменена <%= item.canceled_at.strftime("%F %T") %></i>
         <% else %>
-        <i class="text-danger">Неактивно</i>
+          <% if item.check_status %>
+          <i class="text-success">Активно</i>
+          <% else %>
+          <i class="text-danger">Неактивно</i>
+          <% end %>
         <% end %>
       </td>
       <td>
@@ -44,7 +48,12 @@
       </td>
       <% if current_user.admin? %>
       <td>
-        <%= link_to "Удалить",paid_service_path(item.id),method: :delete %>
+        <% if !item.canceled? %>
+            <% if !item.service.countable %>
+              <%= link_to "Продлить",new_renewal_paid_service_path(item.id) %>
+            <% end %>
+            <%= link_to "Отменить",paid_service_path(item.id),method: :delete %>
+        <% end %>
       </td>
       <% end %>
     </tr>

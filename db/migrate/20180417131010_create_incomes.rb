@@ -7,7 +7,7 @@ class CreateIncomes < ActiveRecord::Migration[5.1]
       t.text :comment
       t.integer :client_id
       t.integer :service_id
-      t.belongs_to :cash_box,index: true
+      t.belongs_to :cash_box_session,index: true
       t.belongs_to :paid_service,index: true
       t.datetime :deleted_at
       t.timestamps

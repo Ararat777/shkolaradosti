@@ -1,16 +1,20 @@
 <h2 class="text-center">Касса</h2>
-<% ["Incomes","Consumptions","Encashments","Transfers"].each do |item| %>
-<h4 class="text-center text-success"><%= t("operations.#{item}.rus")%></h4>
-  <table class="table">
-    <thead>
-      <tr>
-        <%= render 'table_headers',collection: item.chop %>
-      </tr>
-    </thead>
-    <tbody>
-      <%= render 'collection',collection: current_cash_box.send(item.downcase).order("created_at DESC").take(5) %>
-    </tbody>
-  </table>
+<% if current_cash_box.current_cash_box_session %>
+  <% ["Incomes","Consumptions","Encashments","Transfers"].each do |item| %>
+  <h4 class="text-center text-success"><%= t("operations.#{item}.rus")%></h4>
+    <table class="table">
+      <thead>
+        <tr>
+          <%= render 'table_headers',collection: item.chop %>
+        </tr>
+      </thead>
+      <tbody>
+          <%= render 'collection',collection: current_cash_box.current_cash_box_session.send(item.downcase).order("created_at DESC").take(5) %>
+      </tbody>
+    </table>
+  <% end %>
+<% else %>
+  <h4>Кассовая смена закрыта</h4>
 <% end %>
 
 

@@ -1,9 +1,7 @@
 class PaidServicesController < ApplicationController
   
-  before_action :set_paid_service, only: [:update,:edit,:surcharge,:destroy]
-  def index
-    @paid_services = @client.paid_services
-  end
+  before_action :set_paid_service, only: [:update,:edit,:surcharge,:destroy,:new_renewal,:renewal]
+  
   
   def new
     @paid_service = PaidService.new
@@ -11,22 +9,11 @@ class PaidServicesController < ApplicationController
   end
   
   def create
-    @client = Client.find(paid_service_params[:client_id])
-    if @paid_service = @client.has_active_paid_service?(paid_service_params[:service_id])
-      
-      if @paid_service.update(:end_date => paid_service_params[:end_date], :required_amount => @paid_service.required_amount + paid_service_params[:required_amount].to_f)
-        @income = @paid_service.incomes.create(paid_service_params[:incomes_attributes]["0"])
-        redirect_to income_path(@income.id)
-      else
-        render :new
-      end
+    @paid_service = PaidService.new(paid_service_params)
+    if @paid_service.save
+      redirect_to income_path(@paid_service.incomes.last.id)
     else
-      @paid_service = PaidService.new(paid_service_params)
-      if @paid_service.save
-          redirect_to income_path(@paid_service.incomes.last.id)
-      else
-          render :new
-      end
+      render :new
     end
   end
   
@@ -44,10 +31,19 @@ class PaidServicesController < ApplicationController
   end
   
   def destroy
-    @paid_service.destroy
+    @paid_service.update(status: false,canceled_at: Time.now)
     redirect_to client_path(@paid_service.client.id)
   end
   
+  def new_renewal
+  end
+  
+  def renewal
+    params = renewal_paid_service_params
+    params[:required_amount] = params[:required_amount].to_f + @paid_service.required_amount
+    @paid_service.update(params)
+    redirect_to income_path(@paid_service.incomes.last)
+  end
   
   def surcharge
     @income = @paid_service.incomes.new
@@ -55,7 +51,7 @@ class PaidServicesController < ApplicationController
   
   def calculate_required_amount
     @paid_service = PaidService.new
-    @paid_service.calculate_required_amount(calculating_params)
+    @required_amount = @paid_service.calculate_required_amount(calculating_params)
     respond_to do |format|
       format.js
     end
@@ -64,9 +60,7 @@ class PaidServicesController < ApplicationController
   private
   
   def paid_service_params
-    merged_params = params.require(:paid_service).permit(:service_id,:start_date,:end_date,:amount,:comment,:required_amount,:client_id,:single_discount_id,:incomes_attributes => [:amount])
-    merged_params[:incomes_attributes]["0"].merge!(cash_box_id: current_cash_box.id)
-    merged_params
+    params.require(:paid_service).permit(:service_id,:start_date,:end_date,:comment,:required_amount,:client_id,:single_discount_id,:incomes_attributes => [:amount,:cash_box_session_id])
   end
   
   def calculating_params
@@ -75,5 +69,9 @@ class PaidServicesController < ApplicationController
   
   def set_paid_service
      @paid_service = PaidService.find(params[:id])
+  end
+  
+  def renewal_paid_service_params
+    params.require(:paid_service).permit(:end_date,:required_amount,:single_discount_id,:incomes_attributes => [:amount,:cash_box_session_id])
   end
 end

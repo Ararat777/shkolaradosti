@@ -28,6 +28,7 @@
     <div class="form-group">
       <%= ff.label "Сумма" %>
       <%= ff.number_field :amount,class: "form-control",min: 1,id: "amount",step: "0.01" %>
+      <%= ff.hidden_field :cash_box_session_id,value: current_cash_box.current_cash_box_session.id %>
     </div>
     <% end %>
     <div class="form-group">
@@ -50,3 +51,29 @@
     </div>
   </div>
 </div>
+
+<script>
+  $(document).ready(function(){
+    var select = $("#select_service")
+  
+    var price = select.find("option:selected").data('price');
+
+    $("#paid_service_service_id").val(select.val());
+
+    $('#require-price').val(price);
+
+    $('#amount').attr("max",price);
+
+    select.on("change",function(){
+      price = $(this).find("option:selected").data('price');
+      $('#require-price').val(price);
+      $('#amount').attr("max",price);
+      $("#paid_service_service_id").val(select.val());
+      if($(this).find("option:selected").text() == "Питание"){
+        $("#select_discount").attr("disabled",true);
+      }else{
+        $("#select_discount").attr("disabled",false);
+      }
+    });
+  });
+</script>

@@ -1,0 +1,28 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th>Название</th>
+      <th>Филиал</th>
+      <th>Дата</th>
+      <th>Действия</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @cash_box_sessions.each do |item| %>
+    <tr>
+      <td>
+        <%= "Кассовая смена №#{item.id}" %>
+      </td>
+      <td>
+        <%= item.cash_box.branch.title %>
+      </td>
+      <td>
+        <%= item.closed_at.strftime("%F %T") %>
+      </td>
+      <td>
+        <%= link_to "Просмотреть",reports_cash_box_session_path(item.id,:format => 'pdf'),target: '_blank' %>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

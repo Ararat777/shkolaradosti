@@ -10,6 +10,7 @@ class CreatePaidServices < ActiveRecord::Migration[5.1]
       t.boolean :status,default: true
       t.float :required_amount
       t.float :lack,default: 0
+      t.datetime :canceled_at
       t.timestamps
     end
   end

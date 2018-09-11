@@ -1,2 +1,2 @@
-$('#require-price').val("<%= @paid_service.required_amount.round %>");
-$('#amount').attr("max",<%= @paid_service.required_amount.round %>);
+$('#require-price').val("<%= @required_amount.round %>");
+$('#amount').attr("max",<%= @required_amount.round %>);

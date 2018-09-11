@@ -6,7 +6,7 @@ module OperationActions
     before_action :set_operation,only: [:show,:destroy]
     
     def index
-      @collection = current_cash_box.send(controller_name.downcase).order("created_at DESC")
+      @collection = current_cash_box.current_cash_box_session.send(controller_name.downcase).order("created_at DESC")
       if params[:q]
         filter_query(params[:q])
       end
@@ -26,14 +26,10 @@ module OperationActions
       if @operation.save
         redirect_to self.send("#{controller_name.downcase.chop}_path",@operation.id)
       else
+        render :new
       end
     end
     
-    def destroy
-      @operation.cancel!
-      redirect_to cashbox_path
-    end
-  
     private
     
     def filter_query(query)

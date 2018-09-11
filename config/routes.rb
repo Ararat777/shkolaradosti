@@ -35,8 +35,13 @@ Rails.application.routes.draw do
       member do
         get "surcharge"
       end
+      member do
+        get "new_renewal"
+        put "renewal"
+      end
     end
     post "/calculate_required_amount",to: "paid_services#calculate_required_amount"
+    resources :cash_box_sessions,only: [:create,:update]
     resources :incomes, only: [:index,:show,:new,:create,:destroy]
     resources :encashments, :consumptions, only: [:index,:show,:new,:create,:destroy]
     resources :transfers, only: [:index,:show,:new,:create] do
@@ -45,10 +50,18 @@ Rails.application.routes.draw do
       end
     end
   end
+  scope "/inventory" do
+    resources :inventory_categories, only: [:index,:new, :create, :show,:edit,:update,:destroy]
+  end
   resources :reports, only: [:index,:new] do
     member do
       get "get_report.pdf",to: "reports#get_report_pdf",as: :get_pdf
     end
+    
+  end
+  
+  scope '/reports' do
+    resources :cash_box_sessions,only: [:index,:show], as: :reports_cash_box_sessions
   end
   post "/make_report.pdf",to: "reports#make_report",as: :make_report_pdf
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

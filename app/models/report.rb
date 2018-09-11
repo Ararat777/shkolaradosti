@@ -6,4 +6,5 @@ class Report < ApplicationRecord
   def generate_report_pdf(collection)
     ReportPDF.new.generate_report(collection)
   end
+  
 end

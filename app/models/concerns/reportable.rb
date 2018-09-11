@@ -1,29 +1,6 @@
 require "fileutils"
 
 module Reportable
-  extend ActiveSupport::Concern
-  
-    included do
-      
-      class_eval do
-        if self != Report
-          has_one :report,as: :reportable
-          after_create :make_report_pdf
-
-          private
-
-          def make_report_pdf
-            report = self.build_report
-            report.title = "#{self.class.name}_#{self.created_at.strftime("%F")}"
-            report.path = "#{Rails.root}/app/reports#{if self.respond_to?(:cash_box) then '/' + self.cash_box.branch.title end}/#{self.class.name}/#{self.created_at.year}/#{self.created_at.strftime('%B')}"
-
-            FileUtils.mkdir_p(report.path)
-            ReportPDF.new(:page_size => [570,2000]).make_report(self,"#{report.path}/#{report.title}.pdf")
-            report.save
-          end
-        end
-      end
-    end
   
   class ReportPDF < Prawn::Document
     
@@ -33,13 +10,19 @@ module Reportable
     
     def make_report(operation,path)
       font "#{Rails.root}/app/assets/fonts/TimesNewRomanRegular.ttf"
-      data = [get_operation_header(operation.class.name)]
+      data = [I18n.t("operations.#{operation.class.name}.table_titles")]
       
       arr = []
       arr << operation.branch_sender.title if operation.respond_to?(:branch_sender)
       arr << operation.branch_acceptor.title if operation.respond_to?(:branch_acceptor)
       arr << operation.acceptor if operation.respond_to?(:acceptor)
-      arr << operation.client.name if operation.respond_to?(:client)
+      if operation.respond_to?(:client)
+        if operation.client
+          arr << operation.client.name
+        else
+          arr << ""
+        end
+      end
       arr << operation.title if operation.respond_to?(:title)
       arr << operation.amount.to_s
       arr << operation.status.to_s if operation.respond_to?(:status)
@@ -47,22 +30,28 @@ module Reportable
       arr << operation.comment.to_s
       data << arr
 
-      text "Отчет за #{operation.class.name} #{Time.zone.now.strftime('%a, %d %b %Y %H:%M:%S')}",align: :center,size: 20
+      text "Отчет за #{I18n.t("operations.#{operation.class.name}.rus")} #{Time.zone.now.strftime('%F_%T')}",align: :center,size: 20
       move_down(20)
-      table(data)
+      table(data,:position => :center)
       render_file(path)
     end
     
     def generate_report(collection)
       font "#{Rails.root}/app/assets/fonts/TimesNewRomanRegular.ttf"
       operation = collection.klass.name
-      data = [get_operation_header(operation)]
+      data = [I18n.t("operations.#{operation}.table_titles")]
       collection.each do |item|
         arr = []
-        arr << item.branch_sender.title if item.respond_to?(:branch_sender)
-        arr << item.branch_acceptor.title if item.respond_to?(:branch_acceptor)
+        arr << item.sender.branch.title if item.respond_to?(:sender)
+          arr << item.reciever.branch.title if item.respond_to?(:reciever)
         arr << item.acceptor if item.respond_to?(:acceptor)
-        arr << item.client.name if item.respond_to?(:client)
+        if item.respond_to?(:client)
+          if item.client
+            arr << item.client.name
+          else
+              arr << ""
+          end
+        end
         arr << item.title if item.respond_to?(:title)
         arr << item.amount.to_s
         arr << item.status.to_s if item.respond_to?(:status)
@@ -73,22 +62,40 @@ module Reportable
       puts data.inspect
       text "Отчет по приходам на #{Time.zone.now.strftime("%F %T")}",align: :center,size: 20
       move_down(20)
-      table(data)
+      table(data,:position => :center)
       render
     end
     
-    private
-    
-    def get_operation_header(operation_name)
-      if operation_name == "Income"
-        ["Филиал","Кто оплатил","Услуга","Сумма оплаты","Дата оплаты","Комментарий"]
-      elsif operation_name == "Consumption"
-        ["За что","Сумма оплаты","Дата оплаты","Комментарий"]
-      elsif operation_name == "Encashment"
-        ["Сумма","Дата инкасации","Комментарий"]
-      elsif operation_name == "Transfer"
-        ["Откуда","Куда","Сумма","Статус","Дата перевода","Комментарий"]
+    def cash_box_session_pdf(cash_box_session,path)
+      font "#{Rails.root}/app/assets/fonts/TimesNewRomanRegular.ttf"
+      text "Отчет по кассовой смене №#{cash_box_session.id}",align: :center,size: 22
+      ["incomes","consumptions","encashments","transfers"].each do |item|
+        data = [I18n.t("operations.#{item.capitalize.chop}.table_titles")]
+        cash_box_session.send(item).each do |operation|
+          arr = []
+          arr << operation.sender.branch.title if operation.respond_to?(:sender)
+          arr << operation.reciever.branch.title if operation.respond_to?(:reciever)
+          arr << operation.acceptor if operation.respond_to?(:acceptor)
+          if operation.respond_to?(:client)
+            if operation.client
+              arr << operation.client.name
+            else
+              arr << ""
+            end
+          end
+          arr << operation.title if operation.respond_to?(:title)
+          arr << operation.amount.to_s
+          arr << operation.status.to_s if operation.respond_to?(:status)
+          arr << operation.created_at.strftime("%F %T").to_s
+          arr << operation.comment.to_s
+          data << arr
+        end
+        text I18n.t("operations.#{item.capitalize.chop}.rus"),align: :center,size: 20
+        move_down(10)
+        table(data,:position => :center)
+        move_down(20)
       end
+      render_file(path)
     end
   end
 end

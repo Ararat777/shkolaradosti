@@ -17,6 +17,10 @@ class Client < ApplicationRecord
     end
   end
   
+  def discount_client?
+    self.discount
+  end
+  
   def has_active_paid_service?(service_id)
     self.paid_services.find_by(:service_id => service_id,:status => true)
   end

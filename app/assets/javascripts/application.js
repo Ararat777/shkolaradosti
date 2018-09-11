@@ -27,27 +27,7 @@ $(document).ready(function(){
     });
   });
   
-  var select = $("#select_service")
   
-  var price = select.find("option:selected").data('price');
-  
-  $("#paid_service_service_id").val(select.val());
-  
-  $('#require-price').val(price);
-  
-  $('#amount').attr("max",price);
-  
-  select.on("change",function(){
-    price = $(this).find("option:selected").data('price');
-    $('#require-price').val(price);
-    $('#amount').attr("max",price);
-    $("#paid_service_service_id").val(select.val());
-    if($(this).find("option:selected").text() == "Питание"){
-      $("#select_discount").attr("disabled",true);
-    }else{
-      $("#select_discount").attr("disabled",false);
-    }
-  });
   
   $("#new_paid_service").find(".date").on("change",function(){
     if($(this).attr("id") == "paid_service_start_date"){

@@ -11,8 +11,7 @@ class Service < ApplicationRecord
     end
   end
   
-  def discount_client_price(client_id)
-    client = Client.find(client_id)
+  def discount_client_price(client)
     self.price * (1 - (client.discount.discount_size.to_f / 100))
   end
 end

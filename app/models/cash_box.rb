@@ -1,32 +1,26 @@
 class CashBox < ApplicationRecord
   belongs_to :branch
-  has_many :incomes
-  has_many :consumptions
-  has_many :encashments
+  has_many :cash_box_sessions
+  has_many :incomes,through: :cash_box_sessions
+  has_many :consumptions,through: :cash_box_sessions
+  has_many :encashments,through: :cash_box_sessions
   
-  def transfers
-    @transfers ||= Transfer.where(:from_cashbox => self[:id]).or(Transfer.where(:to_cashbox => self[:id]))
+  def current_cash_box_session
+    @current_cash_box_session ||= self.cash_box_sessions.find_by(:closed_at => nil)
   end
+  
   
   def exec_operation(operation,params)
-    self.send(operation).create(params)
-  end
-  
-  def make_transfer(params)
-    Transfer.create(params)
+    self.current_cash_box_session.send(operation).new(params)
   end
   
   
-  def calculate_cash
-    self.cash = sum_operations("incomes") - sum_operations("consumptions") - sum_operations("encashments") + sum_operations("transfers")
+  def update_cash
+    self.cash = sum_operations("incomes") - sum_operations("consumptions") - sum_operations("encashments")
     self.save
   end
   
   def sum_operations(operations)
-    if operations != "transfers"
-      self.send(operations).exist.sum(:amount)
-    else
-     Transfer.where(:to_cashbox => self[:id],:status => "confirmed").sum(:amount) - Transfer.where(:from_cashbox => self[:id],:status => "confirmed").sum(:amount)
-    end
+    self.current_cash_box_session.send(operations).sum(:amount)
   end
 end

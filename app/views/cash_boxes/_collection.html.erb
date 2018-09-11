@@ -1,11 +1,11 @@
 <% collection.each do |operation| %>
-  <tr class="<%= operation_status(operation) %>">
-    <% if operation.respond_to?(:branch_sender) %>
-    <td><%= operation.branch_sender.title  %></td>
+  <tr>
+    <% if operation.respond_to?(:sender) %>
+    <td><%= operation.sender.branch.title  %></td>
     <% end %>
 
-    <% if operation.respond_to?(:branch_acceptor) %>
-    <td><%= operation.branch_acceptor.title  %></td>
+    <% if operation.respond_to?(:reciever) %>
+    <td><%= operation.reciever.branch.title  %></td>
     <% end %>
 
     <% if operation.respond_to?(:acceptor) %>
@@ -13,7 +13,11 @@
     <% end %>
 
     <% if operation.respond_to?(:client) %>
-    <td><%= operation.client.name  %></td>
+    <td>
+      <% if operation.client %>
+        <%= operation.client.name  %>
+      <% end %>
+    </td>
     <% end %>
 
     <% if operation.respond_to?(:title) %>
@@ -30,14 +34,8 @@
     <td><%= operation.comment %></td>
     <td>
       <%= link_to "Просмотреть", operation_path(operation) %>
-      <% if operation.respond_to?(:canceled?) %>
-        <% if current_user.admin? && !operation.canceled? %>
-        | <%= link_to "Отменить",operation_path(operation),method: :delete %>
-        <% end %>
-      <% else %>
-        <% if operation.status == "pending" && operation.to_cashbox == current_cash_box.id %>
-        | <%= link_to "ПОДТВЕРДИТЬ",confirme_transfer_path(operation.id),method: :put %>
-        <% end %>
+      <% if operation.respond_to?(:exec_transfer) %>
+      <%= link_to "Подтвердить", confirme_transfer_path(operation.id),method: :put %>
       <% end %>
     <td>
   </tr>

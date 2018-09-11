@@ -54,9 +54,4 @@ module CashBoxesHelper
     end
   end
   
-  def operation_status(operation)
-    if operation.class.name != "Transfer"
-      "bg-danger" if operation.canceled?
-    end
-  end
 end

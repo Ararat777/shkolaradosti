@@ -1,5 +1,25 @@
 class TransfersController < ApplicationController
-  include OperationActions
+  
+  def index
+    @transfers = current_cash_box.current_cash_box_session.transfers
+  end
+  
+  def new
+    @transfer = Transfer.new
+  end
+  
+  def show
+  end
+  
+  def create
+    @transfer = Transfer.new(transfers_params)
+    if @transfer.save
+      redirect_to cashbox_path
+    else
+      flash[:error] = @transfer.errors.full_messages
+      render :new
+    end
+  end
   
   def confirme
     Transfer.find(params[:id]).exec_transfer

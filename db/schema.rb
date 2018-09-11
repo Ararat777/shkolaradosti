@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180626211632) do
+ActiveRecord::Schema.define(version: 20180908150337) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,8 +23,23 @@ ActiveRecord::Schema.define(version: 20180626211632) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "cash_box_sessions", force: :cascade do |t|
+    t.datetime "closed_at"
+    t.bigint "cash_box_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cash_box_id"], name: "index_cash_box_sessions_on_cash_box_id"
+  end
+
+  create_table "cash_box_sessions_transfers", id: false, force: :cascade do |t|
+    t.bigint "cash_box_session_id"
+    t.bigint "transfer_id"
+    t.index ["cash_box_session_id"], name: "index_cash_box_sessions_transfers_on_cash_box_session_id"
+    t.index ["transfer_id"], name: "index_cash_box_sessions_transfers_on_transfer_id"
+  end
+
   create_table "cash_boxes", force: :cascade do |t|
-    t.decimal "cash"
+    t.decimal "cash", default: "0.0"
     t.bigint "branch_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -51,11 +66,11 @@ ActiveRecord::Schema.define(version: 20180626211632) do
     t.string "title"
     t.float "amount"
     t.text "comment"
-    t.bigint "cash_box_id"
+    t.bigint "cash_box_session_id"
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["cash_box_id"], name: "index_consumptions_on_cash_box_id"
+    t.index ["cash_box_session_id"], name: "index_consumptions_on_cash_box_session_id"
   end
 
   create_table "days_counts", force: :cascade do |t|
@@ -79,11 +94,11 @@ ActiveRecord::Schema.define(version: 20180626211632) do
   create_table "encashments", force: :cascade do |t|
     t.float "amount"
     t.text "comment"
-    t.bigint "cash_box_id"
+    t.bigint "cash_box_session_id"
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["cash_box_id"], name: "index_encashments_on_cash_box_id"
+    t.index ["cash_box_session_id"], name: "index_encashments_on_cash_box_session_id"
   end
 
   create_table "exceptional_days", force: :cascade do |t|
@@ -115,13 +130,33 @@ ActiveRecord::Schema.define(version: 20180626211632) do
     t.text "comment"
     t.integer "client_id"
     t.integer "service_id"
-    t.bigint "cash_box_id"
+    t.bigint "cash_box_session_id"
     t.bigint "paid_service_id"
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["cash_box_id"], name: "index_incomes_on_cash_box_id"
+    t.index ["cash_box_session_id"], name: "index_incomes_on_cash_box_session_id"
     t.index ["paid_service_id"], name: "index_incomes_on_paid_service_id"
+  end
+
+  create_table "inventory_categories", force: :cascade do |t|
+    t.string "title"
+    t.integer "size"
+    t.bigint "branch_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["branch_id"], name: "index_inventory_categories_on_branch_id"
+  end
+
+  create_table "items", force: :cascade do |t|
+    t.string "title"
+    t.integer "serial_number"
+    t.float "cost"
+    t.text "comment"
+    t.bigint "inventory_category_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["inventory_category_id"], name: "index_items_on_inventory_category_id"
   end
 
   create_table "months", force: :cascade do |t|
@@ -143,6 +178,7 @@ ActiveRecord::Schema.define(version: 20180626211632) do
     t.boolean "status", default: true
     t.float "required_amount"
     t.float "lack", default: 0.0
+    t.datetime "canceled_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["client_id"], name: "index_paid_services_on_client_id"

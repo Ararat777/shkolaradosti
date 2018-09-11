@@ -1,0 +1,20 @@
+<h4>Инвентарь</h4>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Название</th>
+      <th>Филиал</th>
+      <th>Кол-во</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @inventory_categories.each do |category| %>
+      <tr>
+        <td><%= category.title %></td>
+        <td><%= category.branch.title %></td>
+        <td><%= category.size %></td>
+        <td><%= link_to "Изменить",edit_inventory_category_path(category.id) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

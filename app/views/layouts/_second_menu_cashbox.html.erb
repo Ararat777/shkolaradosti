@@ -1,3 +1,4 @@
+<% if current_cash_box.current_cash_box_session %>
 <%= link_to "Оформить услугу",new_paid_service_path,class: "list-group-item list-group-item-action #{current_class?(new_paid_service_path)}" %>
 <%= link_to "Оформить приход",new_income_path,class: "list-group-item list-group-item-action #{current_class?(new_income_path)}" %>
 <%= link_to "Все приходы",incomes_path,class: "list-group-item list-group-item-action #{current_class?(incomes_path)}" %>
@@ -7,3 +8,7 @@
 <%= link_to "Все переводы",transfers_path,class: "list-group-item list-group-item-action #{current_class?(transfers_path)}" %>
 <%= link_to "Инкасация",new_encashment_path,class: "list-group-item list-group-item-action #{current_class?(new_encashment_path)}" %>
 <%= link_to "Все инкасации",encashments_path,class: "list-group-item list-group-item-action #{current_class?(encashments_path)}" %>
+<%= link_to "Закрыть кассовую смену",cash_box_session_path(current_cash_box.current_cash_box_session.id),class: "list-group-item list-group-item-action",method: :put %>
+<% else %>
+<%= link_to "Открыть кассовую смену",cash_box_sessions_path,class: "list-group-item list-group-item-action",method: :post %>
+<% end %>

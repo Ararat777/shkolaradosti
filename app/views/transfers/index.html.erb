@@ -1,13 +1,13 @@
-<%= render 'cash_boxes/collection_filter',collection: @collection %>
+<%= render 'cash_boxes/collection_filter',collection: @transfers %>
 <h4 class="text-center">Переводы</h4>
 <table class="table">
   <thead>
     <tr>
-      <%= render 'cash_boxes/table_headers',collection: @collection %>
+      <%= render 'cash_boxes/table_headers',collection: @transfers %>
     </tr>
   </thead>
   <tbody>
-      <%= render 'cash_boxes/collection',collection: @collection %>
+      <%= render 'cash_boxes/collection',collection: @transfers %>
   </tbody>
 </table>
     

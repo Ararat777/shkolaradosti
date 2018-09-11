@@ -1,9 +1,8 @@
 class Encashment < ApplicationRecord
-  include Reportable
+  include Pdfable
   include Searchable
-  include Cancelable
   include Calculable
-  belongs_to :cash_box
+  belongs_to :cash_box_session
   
  
 end

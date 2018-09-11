@@ -3,7 +3,7 @@
 <%= f.hidden_field :paid_service_id, value: @paid_service.id %>
 <div class="form-group">
   <%= f.label "Требуемая сумма" %>
-  <%= f.text_field :required_amount, value: @paid_service.required_amount,class: "form-control", disabled: "disabled" %>
+  <%= f.text_field :required_amount, value: @paid_service.lack,class: "form-control", disabled: "disabled" %>
 </div>
 <% if @paid_service.lack > 0 %>
 <i class="text-warning">Недостаточно <%= @paid_service.lack %>грн</i>
