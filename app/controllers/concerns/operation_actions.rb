@@ -21,7 +21,6 @@ module OperationActions
     end
     
     def create
-      puts controller_name.downcase.to_sym
       @operation = current_cash_box.exec_operation(controller_name.downcase,self.send("#{controller_name.downcase}_params"))
       if @operation.save
         redirect_to self.send("#{controller_name.downcase.chop}_path",@operation.id)

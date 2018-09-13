@@ -12,13 +12,13 @@ class User < ApplicationRecord
   
   def admin_of_branch?
     unless self.admin?
-      self.role.title == "Администратор"
+      self.role.id == 1
     end
   end
   
   def booker?
     unless self.admin?
-      self.role.title == "Бухгалтер"
+      self.role.id == 2
     end
   end
 end

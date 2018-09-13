@@ -6,22 +6,17 @@ module Reportable
     
     def initialize(options = {:page_size => "A4"})
       super(options)
+      font "#{Rails.root}/app/assets/fonts/TimesNewRomanRegular.ttf"
     end
     
     def make_report(operation,path)
-      font "#{Rails.root}/app/assets/fonts/TimesNewRomanRegular.ttf"
       data = [I18n.t("operations.#{operation.class.name}.table_titles")]
-      
       arr = []
       arr << operation.branch_sender.title if operation.respond_to?(:branch_sender)
       arr << operation.branch_acceptor.title if operation.respond_to?(:branch_acceptor)
       arr << operation.acceptor if operation.respond_to?(:acceptor)
       if operation.respond_to?(:client)
-        if operation.client
-          arr << operation.client.name
-        else
-          arr << ""
-        end
+        arr << (operation.client ? operation.client.name : "")
       end
       arr << operation.title if operation.respond_to?(:title)
       arr << operation.amount.to_s
@@ -37,7 +32,6 @@ module Reportable
     end
     
     def generate_report(collection)
-      font "#{Rails.root}/app/assets/fonts/TimesNewRomanRegular.ttf"
       operation = collection.klass.name
       data = [I18n.t("operations.#{operation}.table_titles")]
       collection.each do |item|
@@ -46,11 +40,7 @@ module Reportable
           arr << item.reciever.branch.title if item.respond_to?(:reciever)
         arr << item.acceptor if item.respond_to?(:acceptor)
         if item.respond_to?(:client)
-          if item.client
-            arr << item.client.name
-          else
-              arr << ""
-          end
+          arr << (item.client ? item.client.name : "")
         end
         arr << item.title if item.respond_to?(:title)
         arr << item.amount.to_s
@@ -67,7 +57,6 @@ module Reportable
     end
     
     def cash_box_session_pdf(cash_box_session,path)
-      font "#{Rails.root}/app/assets/fonts/TimesNewRomanRegular.ttf"
       text "Отчет по кассовой смене №#{cash_box_session.id}",align: :center,size: 22
       ["incomes","consumptions","encashments","transfers"].each do |item|
         data = [I18n.t("operations.#{item.capitalize.chop}.table_titles")]
@@ -77,11 +66,7 @@ module Reportable
           arr << operation.reciever.branch.title if operation.respond_to?(:reciever)
           arr << operation.acceptor if operation.respond_to?(:acceptor)
           if operation.respond_to?(:client)
-            if operation.client
-              arr << operation.client.name
-            else
-              arr << ""
-            end
+            arr << (operation.client ? operation.client.name : "")
           end
           arr << operation.title if operation.respond_to?(:title)
           arr << operation.amount.to_s

@@ -4,10 +4,10 @@ $("#client_list li").on("click",function(){
   $("#find_client_id").val($(this).data("id"));
   if($(this).data("discount") == true){
     $("#select_discount").attr("disabled",true);
-    $("#discount_client_id").val($(this).data("id"));
+    $("#paid_service_required_amount_discount_client_id").val($(this).data("id"));
   }else{
     $("#select_discount").attr("disabled",false);
-    $("#discount_client_id").val($(this).data(""));
+    $("#paid_service_required_amount_discount_client_id").val($(this).data(""));
   }
   $("#client_list").hide();
 });

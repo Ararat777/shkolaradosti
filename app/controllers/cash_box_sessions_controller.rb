@@ -1,7 +1,7 @@
 class CashBoxSessionsController < ApplicationController
   
   def index
-    @cash_box_sessions = current_cash_box.cash_box_sessions.where.not(:closed_at => nil)
+    @cash_box_sessions = CashBoxSession.where.not(:closed_at => nil)
   end
   
   def show

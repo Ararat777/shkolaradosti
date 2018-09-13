@@ -38,8 +38,8 @@
     <%= f.submit "Оформить", class: "btn btn-success form-control" %>
     <% end %>
     <div class="mt-4">
-      <%= form_for @paid_service,url: calculate_required_amount_path,html:{id: "calculate_form"},remote: true do |ff| %>
-      <%= ff.hidden_field :client_id,id: "discount_client_id" %>
+      <%= form_for :paid_service_required_amount,url: calculate_required_amount_path,html:{id: "calculate_form"},remote: true do |ff| %>
+      <%= ff.hidden_field :discount_client_id %>
       <%= ff.hidden_field :single_discount_id %>
       <%= ff.hidden_field :service_id %>
       <%= ff.hidden_field :start_date,id: "start_date",value: Date.today %>
@@ -51,29 +51,3 @@
     </div>
   </div>
 </div>
-
-<script>
-  $(document).ready(function(){
-    var select = $("#select_service")
-  
-    var price = select.find("option:selected").data('price');
-
-    $("#paid_service_service_id").val(select.val());
-
-    $('#require-price').val(price);
-
-    $('#amount').attr("max",price);
-
-    select.on("change",function(){
-      price = $(this).find("option:selected").data('price');
-      $('#require-price').val(price);
-      $('#amount').attr("max",price);
-      $("#paid_service_service_id").val(select.val());
-      if($(this).find("option:selected").text() == "Питание"){
-        $("#select_discount").attr("disabled",true);
-      }else{
-        $("#select_discount").attr("disabled",false);
-      }
-    });
-  });
-</script>

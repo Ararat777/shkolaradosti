@@ -3,7 +3,7 @@
     <%= form_for @paid_service,url: renewal_paid_service_path,method: :put do |f| %>
     <div class="form-group">
       <%= f.label "Конец" %>
-      <%= f.date_field :end_date,class: "form-control date",value: @paid_service.end_date + 1.month %>
+      <%= f.date_field :end_date,class: "form-control date",value: (@paid_service.end_date + 1.month).end_of_month %>
     </div>
     <div class="form-group">
       <%= f.label "Скидочный купон" %>
@@ -11,8 +11,7 @@
     </div>
     <div class="form-group">
       <%= f.label "Требуемая сумма" %>
-      <%= f.text_field :required_amount,class: "form-control",id: "require-price", readonly: "readonly",value: @paid_service.client.discount ? @paid_service.service.discount_client_price(@paid_service.client) : @paid_service.service.price %>
-    </div>
+      <%= f.text_field :required_amount,class: "form-control",id: "require-price", readonly: "readonly" %>
     <%= f.fields_for :incomes,@paid_service.incomes.build do |ff| %>
     <div class="form-group">
       <%= ff.label "Сумма" %>

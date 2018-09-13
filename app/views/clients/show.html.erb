@@ -49,9 +49,7 @@
       <% if current_user.admin? %>
       <td>
         <% if !item.canceled? %>
-            <% if !item.service.countable %>
-              <%= link_to "Продлить",new_renewal_paid_service_path(item.id) %>
-            <% end %>
+            <%= link_to "Продлить",new_renewal_paid_service_path(item.id) %>
             <%= link_to "Отменить",paid_service_path(item.id),method: :delete %>
         <% end %>
       </td>

@@ -9,12 +9,16 @@ class Client < ApplicationRecord
   scope :find_client, -> (name) {where("name LIKE '%#{name.mb_chars.capitalize.to_s}%'")}
   
   def handle_visit
-    unless self.visited_days.find_by(:day => Date.today)
+    unless self.visited_today?
       self.visited_days.create(:day => Date.today)
       self.paid_services.countable.each do |item|
         item.decrement_days_count
       end
     end
+  end
+  
+  def visited_today?
+    self.visited_days.find_by(:day => Date.today)
   end
   
   def discount_client?

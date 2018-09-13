@@ -13,11 +13,11 @@ class Transfer < ApplicationRecord
   end
   
   def sender
-    self.cash_box_sessions.find_by(:cash_box_id => self.from_cashbox).cash_box
+    @sender ||= self.cash_box_sessions.find_by(:cash_box_id => self.from_cashbox).cash_box
   end
   
   def reciever
-    self.cash_box_sessions.find_by(:cash_box_id => self.to_cashbox).cash_box
+    @reciever ||= self.cash_box_sessions.find_by(:cash_box_id => self.to_cashbox).cash_box
   end
   
   private

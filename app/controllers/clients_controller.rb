@@ -25,11 +25,6 @@ class ClientsController < ApplicationController
     @client.build_parent
   end
   
-  def edit
-    @client = Client.find(params[:id])
-    
-  end
-  
   def create
     @client = current_branch.clients.new(client_params)
     if @client.save
@@ -37,6 +32,9 @@ class ClientsController < ApplicationController
     else
       render :new
     end
+  end
+  
+  def edit
   end
   
   def update

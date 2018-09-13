@@ -11,13 +11,10 @@ class ExceptionalDay < ApplicationRecord
   end
   
   def change_work_days
-    puts "EXEC"
     if self.is_holiday
-      puts "EXEC1"
       self.destroyed? ? self.month.work_days_size += 1 : self.month.work_days_size -= 1
       self.month.save
     else
-      puts "EXEC2"
       self.destroyed? ? self.month.work_days_size -= 1 : self.month.work_days_size += 1
       self.month.save
     end

@@ -21,13 +21,13 @@ branch_2.users.create(:email => "vasya@admin.com", :password => "123456")
 
 Service.delete_all
 branch.services.create(:title => "Детский сад", :price => 1000)
-branch.services.create(:title => "Питание", :price => 500)
+branch.services.create(:title => "Питание", :price => 50,:countable => true)
 branch.services.create(:title => "Физра", :price => 100)
 
 Role.delete_all
-Role.create(:title => "Администратор")
-Role.create(:title => "Бухгалтер")
-Role.create(:title => "Завхоз")
+Role.create(:id =>1,:title => "Администратор")
+Role.create(:id =>2,:title => "Бухгалтер")
+Role.create(:id =>3,:title => "Завхоз")
 
 
 
