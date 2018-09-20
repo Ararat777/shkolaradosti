@@ -52,7 +52,8 @@ $(document).ready(function(){
   
   
   $("#new_paid_service").find(".date").on("change",function(){
-    if($(this).attr("id") == "paid_service_required_amount_start_date"){
+    console.log($(this).val());
+    if($(this).attr("id") == "paid_service_start_date"){
       $("#start_date").val($(this).val());
     }else{
       $("#end_date").val($(this).val());
@@ -74,6 +75,9 @@ $(document).ready(function(){
     }
   })
   
+$("#calculate-btn").on("click",function(){
+    $("#calculate_form").submit();
+});
   
   
 });

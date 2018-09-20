@@ -5,9 +5,9 @@ class Transfer < ApplicationRecord
   validate :reciever_cash_box_session_is_opened
   
   def exec_transfer
-    self.sender.exec_operation("consumptions",{:title => "Перемещение средств в #{self.reciever.branch.title}", :amount => self.amount, :comment => "Перемещение средств в #{self.reciever.branch.title}"}).save
+    sender.exec_operation("consumptions",{:title => "Перемещение средств в #{self.reciever.branch.title}", :amount => self.amount, :comment => "Перемещение средств в #{self.reciever.branch.title}"}).save
     
-    self.reciever.exec_operation("incomes",{:acceptor => self.reciever.branch.title,:title => "Получение средств от #{self.sender.branch.title}", :amount => self.amount, :comment => "Получение средств от #{self.sender.branch.title}"}).save
+    reciever.exec_operation("incomes",{:acceptor => self.reciever.branch.title,:title => "Получение средств от #{self.sender.branch.title}", :amount => self.amount, :comment => "Получение средств от #{self.sender.branch.title}"}).save
     
     self.confirmed!
   end

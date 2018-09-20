@@ -2,7 +2,7 @@ class InventoryCategoriesController < ApplicationController
   before_action :set_category,only: [:show,:edit,:update,:destroy]
   
   def index
-    @inventory_categories = InventoryCategory.all
+    @inventory_categories = current_branch.inventory_categories
   end
   
   def new
@@ -10,11 +10,11 @@ class InventoryCategoriesController < ApplicationController
   end
   
   def show
-    @category_items = @inventory_category.items
+    
   end
   
   def create
-    @inventory_category = InventoryCategory.new(category_params)
+    @inventory_category = current_branch.inventory_categories.new(category_params)
     if @inventory_category.save
       redirect_to inventory_categories_path
     else
@@ -40,6 +40,6 @@ class InventoryCategoriesController < ApplicationController
   end
   
   def category_params
-    params.require(:inventory_category).permit(:title,:branch_id,:size)
+    params.require(:inventory_category).permit(:title,:size,:comment)
   end
 end

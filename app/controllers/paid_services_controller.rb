@@ -13,6 +13,7 @@ class PaidServicesController < ApplicationController
     if @paid_service.save
       redirect_to income_path(@paid_service.incomes.last.id)
     else
+      flash[:error] = @paid_service.errors.full_messages
       render :new
     end
   end

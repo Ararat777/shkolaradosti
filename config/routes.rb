@@ -52,6 +52,11 @@ Rails.application.routes.draw do
   end
   scope "/inventory" do
     resources :inventory_categories, only: [:index,:new, :create, :show,:edit,:update,:destroy]
+    resources :inventory_transfers,only: [:index,:new, :create,:show] do
+      member do
+        put "confirme"
+      end
+    end
   end
   resources :reports, only: [:index,:new] do
     member do

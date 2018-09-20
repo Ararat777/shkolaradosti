@@ -1,5 +1,5 @@
 class ClientsController < ApplicationController
-  before_action :set_client, only: [:show,:update,:handle_visit,:remove_countable_service_balance]
+  before_action :set_client, only: [:show,:update,:handle_visit,:remove_countable_service_balance,:edit]
   
   def index
     
@@ -54,9 +54,10 @@ class ClientsController < ApplicationController
   end
   
   def remove_countable_service_balance
-    paid_service = @client.paid_services.find(params[:service_id])
-    amount = paid_service.remove_countable_balance
-    current_cash_box.exec_operation("consumptions",:title => "Списание баланса", :amount => amount, :comment => "Списание #{amount}грн с баланса услуги #{paid_service.title}")
+    @paid_service = @client.paid_services.find(params[:service_id])
+    
+    @paid_service.remove_countable_balance(current_cash_box,{:title => "Списание баланса", :amount => @paid_service.countable_balance, :comment => "Списание #{@paid_service.countable_balance}грн с баланса услуги #{@paid_service.title}"})
+    
     redirect_to client_path(@client.id)
   end
   

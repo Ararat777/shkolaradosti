@@ -34,6 +34,7 @@ class Income < ApplicationRecord
     self.title = self.paid_service.service.title
     self.client_id = self.paid_service.client.id
     self.service_id = self.paid_service.service.id
+    self.comment = "Оплата за услугу #{self.title}"
   end
   
   def check_paid_service_lack

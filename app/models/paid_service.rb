@@ -1,11 +1,15 @@
 class PaidService < ApplicationRecord
+  include Reportable
   scope :countable, -> (){where(status: true).joins(:service).where(services: {countable: true})}
+  scope :existing, -> (){where(canceled_at: nil)}
   has_one :days_count
+  has_one :report,as: :reportable
   belongs_to :single_discount
   belongs_to :client
   belongs_to :service
   has_many :incomes
   after_create :set_days_count, if: :service_is_countable?
+  after_create :report_for_client_pdf
   accepts_nested_attributes_for :incomes
 
   
@@ -24,9 +28,9 @@ class PaidService < ApplicationRecord
   def check_status
     
     if self.status && self.end_date < Date.today
-      self.update(status: false).status
+      self.update(status: false)
     elsif self.status == false && self.end_date > Date.today
-      self.update(status: true).status
+      self.update(status: true)
     else
       self.status
     end
@@ -36,10 +40,10 @@ class PaidService < ApplicationRecord
     @balance ||= self.service.price * self.days_count.current_count_days
   end
   
-  def remove_countable_balance
-    balance = countable_balance
-    self.update(:status => false).days_count.update(:current_count_days => 0)
-    balance
+  def remove_countable_balance(cash_box,params)
+    self.update(:status => false)
+    self.days_count.update(:current_count_days => 0)
+    cash_box.exec_operation("consumptions",params).save
   end
   
   def check_lack
@@ -60,7 +64,7 @@ class PaidService < ApplicationRecord
   end
   
   def change_days_count
-    count_days = WorkDaysCalculator.new(self.end_date,self.end_date + 1.month).call()
+    count_days = Month.find_by(:year => self.end_date.year,:number => self.end_date.month).work_days_size
     self.days_count.update(:count_days => count_days + self.days_count.count_days,:current_count_days => count_days + self.days_count.current_count_days)
   end
   
@@ -79,5 +83,14 @@ class PaidService < ApplicationRecord
   def set_days_count
     count_days = WorkDaysCalculator.new(self.start_date,self.end_date).call()
     self.create_days_count!(:count_days => count_days,:current_count_days => count_days)
+  end
+  
+  def report_for_client_pdf
+    report = self.build_report(
+      :title => "Чек для клиента #{self.id}",
+      :path => "#{Rails.root}/app/reports/#{self.client.branch.title}/ChecskForClients/#{self.created_at.year}/#{self.created_at.strftime('%B')}"
+      )
+    ReportPDF.new(:page_size => [560,2000]).make_check_for_client(self,report.path,"#{report.title}.pdf")
+    report.save
   end
 end

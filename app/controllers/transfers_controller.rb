@@ -13,12 +13,14 @@ class TransfersController < ApplicationController
   
   def create
     @transfer = Transfer.new(transfers_params)
+    
     if @transfer.save
       redirect_to cashbox_path
     else
       flash[:error] = @transfer.errors.full_messages
       render :new
     end
+    
   end
   
   def confirme

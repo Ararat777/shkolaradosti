@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180908150337) do
+ActiveRecord::Schema.define(version: 20180914160509) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -111,18 +111,6 @@ ActiveRecord::Schema.define(version: 20180908150337) do
     t.index ["month_id"], name: "index_exceptional_days_on_month_id"
   end
 
-  create_table "foods", force: :cascade do |t|
-    t.float "price"
-    t.float "amount", default: 0.0
-    t.integer "count_days", default: 0
-    t.string "paid_days", default: "0"
-    t.bigint "client_id"
-    t.text "comment"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["client_id"], name: "index_foods_on_client_id"
-  end
-
   create_table "incomes", force: :cascade do |t|
     t.string "acceptor"
     t.string "title"
@@ -143,20 +131,28 @@ ActiveRecord::Schema.define(version: 20180908150337) do
     t.string "title"
     t.integer "size"
     t.bigint "branch_id"
+    t.text "comment"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["branch_id"], name: "index_inventory_categories_on_branch_id"
   end
 
-  create_table "items", force: :cascade do |t|
-    t.string "title"
-    t.integer "serial_number"
-    t.float "cost"
-    t.text "comment"
+  create_table "inventory_categories_transfers", id: false, force: :cascade do |t|
     t.bigint "inventory_category_id"
+    t.bigint "inventory_transfer_id"
+    t.index ["inventory_category_id"], name: "index_inventory_categories_transfers_on_inventory_category_id"
+    t.index ["inventory_transfer_id"], name: "index_inventory_categories_transfers_on_inventory_transfer_id"
+  end
+
+  create_table "inventory_transfers", force: :cascade do |t|
+    t.integer "from_branch"
+    t.integer "to_branch"
+    t.string "inventory_category_title"
+    t.integer "size"
+    t.integer "status", default: 0
+    t.text "comment"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["inventory_category_id"], name: "index_items_on_inventory_category_id"
   end
 
   create_table "months", force: :cascade do |t|

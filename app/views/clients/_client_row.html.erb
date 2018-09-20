@@ -1,7 +1,7 @@
 <td><%= client.name %></td>
 <td><%= client.age %></td>
 <td>
-  <% if client.paid_services.where.not(:lack => 0).size > 0 %>
+  <% if client.paid_services.existing.where.not(:lack => 0).size > 0 %>
     <i class="fa fa-exclamation-triangle text-warning" aria-hidden="true"></i>
   <% else %>
     <i class="fa fa-check text-success" aria-hidden="true"></i>

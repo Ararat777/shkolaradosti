@@ -37,13 +37,15 @@
       </td>
       <td>
         <% if item.lack == 0 %>
-        <i class="text-success">Оплачено</i>
-        <% elsif item.amount == 0 %>
-        <i class="text-danger">Неоплачено</i>
-        <%= link_to "Оформить доплату", surcharge_paid_service_path(item.id),class: "btn btn-primary" %>
-        <% else %>
-        <i class="text-warning">Неполная оплата(Недостаточно <%= item.lack %>грн)</i>
-        <%= link_to "Доплатить", surcharge_paid_service_path(item.id),class: "btn btn-primary" %>
+          <i class="text-success">Оплачено</i>
+          <% elsif item.amount == 0 %>
+          <i class="text-danger">Неоплачено</i>
+          <%= link_to "Оформить доплату", surcharge_paid_service_path(item.id),class: "btn btn-primary" %>
+          <% else %>
+          <i class="text-warning">Неполная оплата(Недостаточно <%= item.lack %>грн)</i>
+          <% unless item.canceled? %>
+            <%= link_to "Доплатить", surcharge_paid_service_path(item.id),class: "btn btn-primary" %>
+          <% end %>
         <% end %>
       </td>
       <% if current_user.admin? %>

@@ -4,6 +4,7 @@ class CreateInventoryCategories < ActiveRecord::Migration[5.1]
       t.string :title
       t.integer :size
       t.belongs_to :branch
+      t.text :comment
       t.timestamps
     end
   end
