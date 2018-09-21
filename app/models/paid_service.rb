@@ -1,6 +1,5 @@
 class PaidService < ApplicationRecord
   include Reportable
-  scope :countable, -> (){where(status: true).joins(:service).where(services: {countable: true})}
   scope :existing, -> (){where(canceled_at: nil)}
   has_one :days_count
   has_one :report,as: :reportable
@@ -25,8 +24,11 @@ class PaidService < ApplicationRecord
     @title ||= self.service.title
   end
   
+  def self.countable
+    where(status: true).joins(:service).where(services: {countable: true})
+  end
+  
   def check_status
-    
     if self.status && self.end_date < Date.today
       self.update(status: false)
     elsif self.status == false && self.end_date > Date.today
