@@ -32,15 +32,9 @@ Rails.application.routes.draw do
   get "/cashbox", to: "cash_boxes#show"
   scope '/cashbox' do
     resources :paid_services do
-      member do
-        get "surcharge"
-      end
-      member do
-        get "new_renewal"
-        put "renewal"
-      end
+      resources :paid_periods,only: [:show,:new,:create,:destroy]
     end
-    post "/calculate_required_amount",to: "paid_services#calculate_required_amount"
+    post "/calculate_required_amount",to: "paid_periods#calculate_required_amount"
     resources :cash_box_sessions,only: [:create,:update]
     resources :incomes, only: [:index,:show,:new,:create,:destroy]
     resources :encashments, :consumptions, only: [:index,:show,:new,:create,:destroy]

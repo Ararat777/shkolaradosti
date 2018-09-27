@@ -31,9 +31,9 @@ $(document).ready(function(){
   if(select.length > 0){
     var price = select.find("option:selected").data('price');
 
-    $("#paid_service_required_amount_service_id").val(select.val());
+    $("#paid_period_required_amount_service_id").val(select.val());
 
-    $('#require-price').val(price);
+    $('#required-price').val(price);
 
     $('#amount').attr("max",price);
 
@@ -41,7 +41,7 @@ $(document).ready(function(){
       price = $(this).find("option:selected").data('price');
       $('#require-price').val(price);
       $('#amount').attr("max",price);
-      $("#paid_service_required_amount_service_id").val(select.val());
+      $("#paid_period_required_amount_service_id").val(select.val());
       if($(this).find("option:selected").text() == "Питание"){
         $("#select_discount").attr("disabled",true);
       }else{
@@ -51,26 +51,26 @@ $(document).ready(function(){
   }
   
   
-  $("#new_paid_service").find(".date").on("change",function(){
+  $(".date").on("change",function(){
     console.log($(this).val());
-    if($(this).attr("id") == "paid_service_start_date"){
+    if($(this).attr("id") == "paid_period_start_date"){
       $("#start_date").val($(this).val());
     }else{
       $("#end_date").val($(this).val());
     }
   })
   $("#select_discount").on("change",function(){
-    $("#paid_service_required_amount_single_discount_id").val($(this).find("option:selected").val())
+    $("#paid_period_required_amount_single_discount_id").val($(this).find("option:selected").val())
   })
   $("#select_client").on("change",function(){
     if (select.find("option:selected").text() != "Питание"){
       
       if($(this).find("option:selected").data("discount") == true){
         $("#select_discount").attr("disabled",true);
-        $("#paid_service_required_amount_discount_client_id").val($(this).find("option:selected").val())
+        $("#paid_period_required_amount_discount_client_id").val($(this).find("option:selected").val())
       }else{
         $("#select_discount").attr("disabled",false);
-        $("#paid_service_required_amount_discount_client_id").val("");
+        $("#paid_period_required_amount_discount_client_id").val("");
       }
     }
   })

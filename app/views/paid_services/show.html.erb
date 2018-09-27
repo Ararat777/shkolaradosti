@@ -1,0 +1,44 @@
+<h4>Услуга: <%= @paid_service.title %></h4>
+<p>Клиент: <%= @paid_service.client.name %></p>
+<p>Оформленные периоды: </p>
+<%= link_to "Добавить",new_paid_service_paid_period_path(@paid_service.id),class: "btn btn-primary" %>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Месяц</th>
+      <th>Начало</th>
+      <th>Конец</th>
+      <th>Стоимость</th>
+      <th>Оплата</th>
+      <th>Оплаченные дни</th>
+      <th>Остаток</th>
+      <th>Баланс</th>
+      <th>Статус</th>
+      <th>Действия</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @paid_periods.each do |item| %>
+    <tr>
+      <td><%= item.title %></td>
+      <td><%= item.start_date %></td>
+      <td><%= item.end_date %></td>
+      <td><%= item.required_amount %> грн</td>
+      <td><%= item.paid_amount %> грн</td>
+      <td><%= item.total_paid_days_size %></td>
+      <td><%= item.rest_paid_days_size %></td>
+      <td><%= item.countable_balance %> грн</td>
+      <td>
+        <% if item.active %>
+          <i class="text-success">Активно</i>
+          <% else %>
+          <i class="text-danger">Неактивно</i>
+        <% end %>
+      </td>
+      <td>
+        <%= link_to "Чек", paid_service_paid_period_path(@paid_service.id,item.id,format: :pdf),class: "btn btn-primary",target: "_blank" %>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

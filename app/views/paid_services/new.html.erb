@@ -6,33 +6,31 @@
       <%= f.select :service_id, current_branch.services.collect{|s| [s.title, s.id,{"data-price" => s.price}]},{},{class: "custom-select",id: "select_service" } %>
     </div>
     <%= render "clients/find_client_input",f: f %>
-    <div class="form-group">
-      <%= f.label "Начало" %>
-      <%= f.date_field :start_date,class: "form-control date",value: Date.today,min: Date.today.beginning_of_month  %>
-    </div>
-    <div class="form-group">
-      <%= f.label "Конец" %>
-      <%= f.date_field :end_date,class: "form-control date",value: Date.today.end_of_month %>
-    </div>
-    <div class="form-group">
-      <%= f.label "Скидочный купон" %>
-      <%= f.select :single_discount_id, current_branch.single_discounts.collect{|s| [s.title, s.id,{"data-discount" => s.discount_size,"data-fixed" => s.fixed}]},{include_blank: "Выберите купон"},{class: "custom-select",id: "select_discount" } %>
-    </div>
-    <div class="form-group">
-      <%= f.label "Требуемая сумма" %>
-      <div id="required_amount_box" class="mb-2">
-        <%= render "required_amount",f: f %>
+    <%= f.fields_for :paid_periods do |pf| %>
+      <div class="form-group">
+        <%= pf.label "Начало" %>
+        <%= pf.date_field :start_date,class: "form-control date",id: "paid_period_start_date",value: Date.today,min: Date.today.beginning_of_month  %>
       </div>
-      <div class="btn btn-primary" id="calculate-btn">
-          Перерасчет
+      <div class="form-group">
+        <%= pf.label "Конец" %>
+        <%= pf.date_field :end_date,class: "form-control date",id: "paid_period_end_date",value: Date.today.end_of_month %>
       </div>
-    </div>
-    <%= f.fields_for :incomes do |ff| %>
-    <div class="form-group">
-      <%= ff.label "Сумма" %>
-      <%= ff.number_field :amount,class: "form-control",min: 1,id: "amount",step: "0.01" %>
-      <%= ff.hidden_field :cash_box_session_id,value: current_cash_box.current_cash_box_session.id %>
-    </div>
+      <div class="form-group">
+        <%= pf.label "Требуемая сумма" %>
+        <div id="required_amount_box" class="mb-2">
+          <%= pf.text_field :required_amount,class: "form-control",id: "required-price",readonly: "readonly" %>
+        </div>
+        <div class="btn btn-primary" id="calculate-btn">
+            Перерасчет
+        </div>
+      </div>
+      <%= pf.fields_for :incomes do |icf| %>
+        <div class="form-group">
+          <%= icf.label "Сумма" %>
+          <%= icf.number_field :amount,class: "form-control",min: 1,id: "amount",step: "0.01" %>
+          <%= icf.hidden_field :cash_box_session_id,value: current_cash_box.current_cash_box_session.id %>
+        </div>
+      <% end  %>
     <% end %>
     <div class="form-group">
       <%= f.label "Комментарий" %>
@@ -41,13 +39,13 @@
     <%= f.submit "Оформить", class: "btn btn-success form-control" %>
     <% end %>
     <div class="mt-4">
-      <%= form_for :paid_service_required_amount,url: calculate_required_amount_path,html:{id: "calculate_form"},remote: true do |ff| %>
-      <%= ff.hidden_field :discount_client_id %>
-      <%= ff.hidden_field :single_discount_id %>
-      <%= ff.hidden_field :service_id %>
-      <%= ff.hidden_field :start_date,id: "start_date",value: Date.today %>
-      <%= ff.hidden_field :end_date,id: "end_date",value: Date.today.end_of_month %>
-    <% end %>
+      <%= form_for :paid_period_required_amount,url: calculate_required_amount_path,html:{id: "calculate_form"},remote: true do |ff| %>
+        <%= ff.hidden_field :discount_client_id %>
+        <%= ff.hidden_field :single_discount_id %>
+        <%= ff.hidden_field :service_id %>
+        <%= ff.hidden_field :start_date,id: "start_date",value: Date.today %>
+        <%= ff.hidden_field :end_date,id: "end_date",value: Date.today.end_of_month %>
+      <% end %>
     </div>
   </div>
 </div>

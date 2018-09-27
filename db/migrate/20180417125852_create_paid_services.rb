@@ -1,15 +1,13 @@
 class CreatePaidServices < ActiveRecord::Migration[5.1]
   def change
     create_table :paid_services do |t|
-      t.date :start_date
-      t.date :end_date
       t.belongs_to :service,index: true
       t.belongs_to :client,index:true
       t.belongs_to :single_discount,index: true
       t.text :comment
-      t.boolean :status,default: true
-      t.float :required_amount
-      t.float :lack,default: 0
+      t.float :total_required_amount
+      t.float :total_lack
+      t.float :total_paid_amount
       t.datetime :canceled_at
       t.timestamps
     end

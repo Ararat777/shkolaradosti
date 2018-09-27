@@ -10,6 +10,7 @@ class RequireAmountCalculator
   end
   
   def call
+    days_size = WorkDaysCalculator.new(@start_date,@end_date).call()
     unless @service.countable
       month_work_days = Month.find_by(:year => @start_date.year,:number => @start_date.month).work_days_size
       if @discount_id.present?
@@ -19,9 +20,9 @@ class RequireAmountCalculator
           @price = @service.discount_client_price(client)
         end
       end
-      ((@price / month_work_days) * WorkDaysCalculator.new(@start_date,@end_date).call()).round
+      {:required_amount => ((@price / month_work_days) * days_size).round, :days_size => days_size}
     else
-      @price * WorkDaysCalculator.new(@start_date,@end_date).call()
+      {:required_amount => @price * days_size,:days_size => days_size}
     end
   end
   

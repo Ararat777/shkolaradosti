@@ -2,9 +2,8 @@ class Income < ApplicationRecord
   include Pdfable
   include Calculable
   belongs_to :cash_box_session
-  belongs_to :paid_service
-  after_create :check_paid_service_lack,if: :has_paid_service?
-  before_create :set_income_credentials,if: :has_paid_service?
+  belongs_to :paid_period
+  before_create :set_income_information,if: :has_paid_service?
   
   scope :cash_box_filter, -> (cash_box) {joins(:cash_box_session).where(cash_box_sessions: {cash_box_id: cash_box}) }
   scope :client_filter, -> (client) {where client_id: client}
@@ -26,10 +25,14 @@ class Income < ApplicationRecord
     end
   end
   
+  def paid_service
+    self.paid_period.paid_service
+  end
+  
   private
   
   
-  def set_income_credentials
+  def set_income_information
     self.acceptor = self.cash_box_session.cash_box.branch.title
     self.title = self.paid_service.service.title
     self.client_id = self.paid_service.client.id
@@ -37,11 +40,7 @@ class Income < ApplicationRecord
     self.comment = "Оплата за услугу #{self.title}"
   end
   
-  def check_paid_service_lack
-    self.paid_service.check_lack
-  end
-  
   def has_paid_service?
-    !self.paid_service_id.nil?
+    self.paid_service
   end
 end

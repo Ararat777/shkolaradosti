@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180914160509) do
+ActiveRecord::Schema.define(version: 20180921163135) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -119,12 +119,12 @@ ActiveRecord::Schema.define(version: 20180914160509) do
     t.integer "client_id"
     t.integer "service_id"
     t.bigint "cash_box_session_id"
-    t.bigint "paid_service_id"
+    t.bigint "paid_period_id"
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["cash_box_session_id"], name: "index_incomes_on_cash_box_session_id"
-    t.index ["paid_service_id"], name: "index_incomes_on_paid_service_id"
+    t.index ["paid_period_id"], name: "index_incomes_on_paid_period_id"
   end
 
   create_table "inventory_categories", force: :cascade do |t|
@@ -164,16 +164,31 @@ ActiveRecord::Schema.define(version: 20180914160509) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "paid_services", force: :cascade do |t|
+  create_table "paid_periods", force: :cascade do |t|
+    t.string "title"
     t.date "start_date"
     t.date "end_date"
+    t.float "required_amount"
+    t.float "paid_amount"
+    t.float "lack", default: 0.0
+    t.float "countable_balance"
+    t.boolean "active"
+    t.integer "total_paid_days_size"
+    t.integer "rest_paid_days_size"
+    t.bigint "paid_service_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["paid_service_id"], name: "index_paid_periods_on_paid_service_id"
+  end
+
+  create_table "paid_services", force: :cascade do |t|
     t.bigint "service_id"
     t.bigint "client_id"
     t.bigint "single_discount_id"
     t.text "comment"
-    t.boolean "status", default: true
-    t.float "required_amount"
-    t.float "lack", default: 0.0
+    t.float "total_required_amount"
+    t.float "total_lack"
+    t.float "total_paid_amount"
     t.datetime "canceled_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

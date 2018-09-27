@@ -12,7 +12,7 @@ class Client < ApplicationRecord
     unless self.visited_today?
       self.visited_days.create(:day => Date.today)
       self.paid_services.countable.each do |item|
-        item.decrement_days_count
+        item.update_rest_paid_days
       end
     end
   end

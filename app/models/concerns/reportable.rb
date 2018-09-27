@@ -128,7 +128,7 @@ module Reportable
       render_file("#{path}/#{file}")
     end
     
-    def make_check_for_client(paid_service,path,file)
+    def make_check_for_client(paid_period,path,file)
       dash 5
       move_down(30)
       #image @logo_path, width: 480
@@ -141,10 +141,10 @@ module Reportable
       move_down(30)
       stroke_horizontal_line 0,485
       move_down(50)
-      text paid_service.client.branch.title,size: 30
-      text paid_service.created_at.strftime("%T | %F"),size: 30
+      text paid_period.paid_service.client.branch.title,size: 30
+      text paid_period.created_at.strftime("%T | %F"),size: 30
       move_down(30)
-      text "1.#{paid_service.service.title}    x#{paid_service.service.countable ? paid_service.days_count.count_days : 1}    #{paid_service.required_amount}грн",size: 30
+      text "1.#{paid_period.service.title}    x#{paid_period.service.countable ? paid_period.total_paid_days_size : 1}    #{paid_period.required_amount}грн",size: 30
       move_down(50)
       stroke_horizontal_line 0,485
       move_down(30)
