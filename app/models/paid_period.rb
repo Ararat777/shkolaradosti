@@ -1,13 +1,13 @@
 class PaidPeriod < ApplicationRecord
   include Reportable
-  default_scope {order(id: :desc)}
+  default_scope {order(start_date: :asc)}
   scope :active, ->(){find_by(active: true)}
   has_one :report,as: :reportable
   belongs_to :paid_service
   has_many :incomes
   before_create :set_title
   before_create :set_countable_information,if: :countable_service?
-  before_create :set_status
+  before_create :change_status
   before_save :set_paid_amount
   after_save :update_paid_service_information
   after_create :report_for_client_pdf
@@ -21,6 +21,14 @@ class PaidPeriod < ApplicationRecord
     self[:rest_paid_days_size] -= 1
     update_countable_balance
     self.save
+  end
+  
+  def change_status
+    if countable_service?
+      self[:active] = rest_paid_days_size > 0 ? true : false
+    else
+      self[:active] = start_date <= Date.today && end_date >= Date.today ? true : false
+    end
   end
   
   private
@@ -48,14 +56,6 @@ class PaidPeriod < ApplicationRecord
   
   def update_paid_service_information
     self.paid_service.update_total_information
-  end
-  
-  def set_status
-    if start_date <= Date.today && end_date >= Date.today
-      self[:active] = true
-    else
-      self[:active] = false
-    end
   end
   
   def report_for_client_pdf

@@ -26,7 +26,7 @@ class PaidServicesController < ApplicationController
   private
   
   def paid_service_params
-    params.require(:paid_service).permit(:service_id,:comment,:client_id,:paid_periods_attributes => [:required_amount,:start_date,:end_date,:incomes_attributes => [:amount,:cash_box_session_id]])
+    params.require(:paid_service).permit(:service_id,:comment,:client_id,:paid_periods_attributes => [:required_amount,:start_date,:end_date,:total_paid_days_size,:incomes_attributes => [:amount,:cash_box_session_id]])
   end
   
   def set_paid_service
